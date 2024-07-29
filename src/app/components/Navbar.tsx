@@ -25,6 +25,25 @@ export default function Navbar() {
     }
   }, []);
 
+  const [itemList, setItemList] = useState<any>({});
+
+  useEffect(() => {
+    const getItems = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/items/", {
+          cache: "no-store",
+        });
+        if(!res.ok){
+          throw new Error("Failed to fetch data");
+        }
+        return (setItemList(await res.json()));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getItems();
+  }, []);
+
   return (
     <div
       className={`${
@@ -55,11 +74,12 @@ export default function Navbar() {
       <div className="w-full  justify-end items-end flex">
         <button
           type="button"
+          onClick={()=>console.log(itemList.items)}
           className="relative max-w-8 inline-flex items-center text-sm font-medium justify-center text-center  focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           <FaCartShopping className="text-3xl text-[#15b7b9]"></FaCartShopping>
           <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-            20
+            {itemList.items && itemList.items.length && itemList.items.length}
           </div>
         </button>
       </div>
