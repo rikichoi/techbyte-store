@@ -16,3 +16,16 @@ export async function POST(request) {
   });
   return NextResponse.json({ message: "Topic Created" }, { status: 201 });
 }
+
+export async function GET(){
+  await connectMongoDb();
+  const items = await Item.find();
+  return NextResponse.json({items})
+}
+
+export async function DELETE(request){
+  const id = request.nextUrl.searchParams.get('id');
+  await connectMongoDb();
+  await Item.findByIdAndDelete(id);
+  return NextResponse.json({message:"Topic deleted"}, {status:200})
+}
