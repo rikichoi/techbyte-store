@@ -12,6 +12,8 @@ export async function PUT(request, { params }) {
     newStock: stock,
     newProductName: productName,
     newBrand: brand,
+    newSale: sale,
+    newDiscount: discount,
   } = await request.json();
   await connectMongoDb();
   await Item.findByIdAndUpdate(id, {
@@ -22,6 +24,8 @@ export async function PUT(request, { params }) {
     stock,
     productName,
     brand,
+    sale,
+    discount,
   });
   return NextResponse.json({ message: "Topic updated" }, { status: 200 });
 }

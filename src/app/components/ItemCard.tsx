@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/carousel";
 
 type ItemCardProps = {
-  carouselLength: number;
   price: number;
   description: string;
   image: string;
@@ -25,21 +24,17 @@ type ItemCardProps = {
   productName: string;
   brand: string;
   id: string;
+  sale: boolean;
+  discount: number;
 };
 
 export function ItemCard(props: ItemCardProps) {
   return (
-    <Card className={"w-[380px]"} {...props}>
+    <Card className={""} {...props}>
       <CardHeader>
         <img src={props.image} alt={props.image}></img>
       </CardHeader>
       <CardContent className="grid gap-4">
-      <button
-        onClick={() => console.log(props.image)}
-        className="w-20 h-12 bg-green-500 "
-      >
-        Log
-      </button>
         <div className=" flex items-center space-x-4 rounded-md border p-4"></div>
         <div>
           <div

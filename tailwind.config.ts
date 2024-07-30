@@ -18,6 +18,13 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        roboto: "'Roboto', sans-serif",
+        ubuntu: "'Ubuntu', sans-serif",
+        inter: "'Inter', sans-serif",
+        opensans: "'Open Sans', sans-serif",
+        poppins: "'Poppins', sans-serif",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

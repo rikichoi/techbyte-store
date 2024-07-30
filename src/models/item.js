@@ -1,17 +1,21 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const itemSchema = new Schema({
+const itemSchema = new Schema(
+  {
     price: Number,
     description: String,
     image: String,
     type: String,
     stock: Number,
     productName: String,
-    brand: String
-},
-{
-    timestamps:true,
-});
+    brand: String,
+    sale: Boolean,
+    discount: Number,
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const Item = mongoose.models.Item || mongoose.model("Item", itemSchema);
 
