@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import * as React from "react";
 import { useState, useEffect, useContext, cache, Key } from "react";
 import {
@@ -33,7 +33,7 @@ type ItemCardProps = {
 };
 
 export function ItemCard(props: ItemCardProps) {
-  const { cart, editCart } = useContext(cartContext);
+  const { cart, editCart, getCart } = useContext(cartContext);
   const [cartItemData, setCartItemData] = useState([]);
   const id = props.id;
 
@@ -47,10 +47,20 @@ export function ItemCard(props: ItemCardProps) {
   }, [cart]);
 
   const addItemHandler = () => {
-    setCartItemData(cartItemData.push({name: props.productName, price: props.price, quantity: 1}));
-    editCart(cart.carts[0]._id, {newItems:cartItemData});
-    console.log(cartItemData)
-  }
+    if (cartItemData.some((e) => e.name === props.productName)) {
+      console.log(cartItemData);
+    } else {
+      setCartItemData(
+        cartItemData.push({
+          name: props.productName,
+          price: props.price,
+          quantity: 1,
+        })
+      );
+      editCart(cart.carts[0]._id, { newItems: cartItemData });
+      getCart();
+    }
+  };
 
   return (
     <Card className={""} {...props}>
@@ -83,7 +93,7 @@ export function ItemCard(props: ItemCardProps) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={()=>addItemHandler()} className="w-full">
+        <Button onClick={() => addItemHandler()} className="w-full">
           Add to cart
         </Button>
         {/* editCart(cart.carts[0]._id, ) */}

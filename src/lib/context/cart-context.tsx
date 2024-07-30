@@ -10,6 +10,7 @@ import {
 export const cartContext = createContext({
   cart: [],
   editCart: async (id: string, newItems: []) => {},
+  getCart: async () => {},
 });
 
 export default function CartContextProvider({ children }) {
@@ -32,20 +33,21 @@ export default function CartContextProvider({ children }) {
     }
   };
 
-  useEffect(() => {
-    const getCart = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/api/carts/", {
-          cache: "no-store",
-        });
-        if (!res.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        return setCart(await res.json());
-      } catch (error) {
-        console.log(error);
+  const getCart = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/api/carts/", {
+        cache: "no-store",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
       }
-    };
+      return setCart(await res.json());
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
     getCart();
   }, []);
 
@@ -54,6 +56,7 @@ export default function CartContextProvider({ children }) {
       value={{
         cart,
         editCart,
+        getCart,
       }}
     >
       {children}
