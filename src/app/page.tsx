@@ -143,7 +143,7 @@ export default function Home() {
         <h3 className="text-sm font-light">
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
-        <div className="grid gap-3 pb-5 grid-cols-4">
+        <div className="grid gap-3 pb-16 grid-cols-4">
           {items.items?.slice(0, 4).map((item: any) => (
             <ItemCard
               key={item._id}
