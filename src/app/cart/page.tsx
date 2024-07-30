@@ -21,29 +21,43 @@ export default function Cart() {
 
   const addQuantity = (productName) => {
     let cartIndex = cartItemData.findIndex((obj) => obj.name == productName);
-    let itemIndex = items.items.findIndex((obj) => obj.productName == productName);
+    let itemIndex = items.items.findIndex(
+      (obj) => obj.productName == productName
+    );
     cartItemData[cartIndex].quantity += 1;
-    cartItemData[cartIndex].price = cartItemData[cartIndex].quantity * items.items[itemIndex].price
+    cartItemData[cartIndex].price =
+      cartItemData[cartIndex].quantity * items.items[itemIndex].price;
     editCart(cart.carts[0]._id, { newItems: cartItemData });
     getCart();
   };
 
   const removeQuantity = (productName) => {
     let cartIndex = cartItemData.findIndex((obj) => obj.name == productName);
-    let itemIndex = items.items.findIndex((obj) => obj.productName == productName);
+    let itemIndex = items.items.findIndex(
+      (obj) => obj.productName == productName
+    );
     cartItemData[cartIndex].quantity -= 1;
-    cartItemData[cartIndex].price = cartItemData[cartIndex].quantity * items.items[itemIndex].price
+    cartItemData[cartIndex].price =
+      cartItemData[cartIndex].quantity * items.items[itemIndex].price;
     editCart(cart.carts[0]._id, { newItems: cartItemData });
     getCart();
   };
 
   const handleFocusChange = (productName, e) => {
     let cartIndex = cartItemData.findIndex((obj) => obj.name == productName);
-    let itemIndex = items.items.findIndex((obj) => obj.productName == productName);
-    cartItemData[cartIndex].quantity = e.target.valueAsNumber;
-    cartItemData[cartIndex].price = cartItemData[cartIndex].quantity * items.items[itemIndex].price
-    editCart(cart.carts[0]._id, { newItems: cartItemData });
-    getCart();
+    let itemIndex = items.items.findIndex(
+      (obj) => obj.productName == productName
+    );
+    if (!isNaN(e.target.valueAsNumber)) {
+      cartItemData[cartIndex].quantity = e.target.valueAsNumber;
+      cartItemData[cartIndex].price =
+        cartItemData[cartIndex].quantity * items.items[itemIndex].price;
+      editCart(cart.carts[0]._id, { newItems: cartItemData });
+      getCart();
+    }
+    if (isNaN(e.target.valueAsNumber)) {
+      return;
+    }
   };
 
   return (
