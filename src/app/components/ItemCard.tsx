@@ -35,7 +35,6 @@ type ItemCardProps = {
 export function ItemCard(props: ItemCardProps) {
   const { cart, editCart, getCart } = useContext(cartContext);
   const [cartItemData, setCartItemData] = useState([]);
-  const id = props.id;
 
   useEffect(() => {
     if (cart.carts) {
