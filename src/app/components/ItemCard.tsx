@@ -1,4 +1,6 @@
+"use client"
 import * as React from "react";
+import { useState, useEffect, useContext, cache, Key } from "react";
 import {
   Card,
   CardContent,
@@ -14,6 +16,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
+import { cartContext } from "@/lib/context/cart-context";
 
 type ItemCardProps = {
   price: number;
@@ -29,6 +33,25 @@ type ItemCardProps = {
 };
 
 export function ItemCard(props: ItemCardProps) {
+  const { cart, editCart } = useContext(cartContext);
+  const [cartItemData, setCartItemData] = useState([]);
+  const id = props.id;
+
+  useEffect(() => {
+    if (cart.carts) {
+      setCartItemData(cart.carts[0].items);
+    }
+    if (!cart.carts) {
+      return;
+    }
+  }, [cart]);
+
+  const addItemHandler = () => {
+    setCartItemData(cartItemData.push({name: props.productName, price: props.price, quantity: 1}));
+    editCart(cart.carts[0]._id, {newItems:cartItemData});
+    console.log(cartItemData)
+  }
+
   return (
     <Card className={""} {...props}>
       <CardHeader>
@@ -59,7 +82,12 @@ export function ItemCard(props: ItemCardProps) {
           </div>
         </div>
       </CardContent>
-      <CardFooter></CardFooter>
+      <CardFooter>
+        <Button onClick={()=>addItemHandler()} className="w-full">
+          Add to cart
+        </Button>
+        {/* editCart(cart.carts[0]._id, ) */}
+      </CardFooter>
     </Card>
   );
 }

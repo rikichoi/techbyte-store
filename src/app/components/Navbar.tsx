@@ -1,11 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { FaCartShopping } from "react-icons/fa6";
 import { Badge } from "@/components/ui/badge";
+import { cartContext } from "@/lib/context/cart-context";
 
 export default function Navbar() {
+  const { cart, editCart } = useContext(cartContext);
   const [active, setActive] = useState(true);
+  const [cartItemsCount, setCartItemsCount] = useState([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -14,10 +17,8 @@ export default function Navbar() {
       window.addEventListener("scroll", () => {
         const currentScrollY = window.scrollY;
         if (currentScrollY > lastScrollY) {
-          console.log("scrool Down");
           setActive(false);
         } else {
-          console.log("scroll Up");
           setActive(true);
         }
         lastScrollY = currentScrollY;
@@ -25,24 +26,14 @@ export default function Navbar() {
     }
   }, []);
 
-  const [itemList, setItemList] = useState<any>({});
-
   useEffect(() => {
-    const getItems = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/api/items/", {
-          cache: "no-store",
-        });
-        if(!res.ok){
-          throw new Error("Failed to fetch data");
-        }
-        return (setItemList(await res.json()));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getItems();
-  }, []);
+    if (cart.carts) {
+      setCartItemsCount(cart.carts[0].items.length);
+    }
+    if (!cart.carts) {
+      return;
+    }
+  }, [cart]);
 
   return (
     <div
@@ -74,12 +65,12 @@ export default function Navbar() {
       <div className="w-full  justify-end items-end flex">
         <button
           type="button"
-          onClick={()=>console.log(itemList.items)}
+          onClick={() => console.log(cart.carts[0])}
           className="relative max-w-8 inline-flex items-center text-sm font-medium justify-center text-center  focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           <FaCartShopping className="text-3xl text-[#15b7b9]"></FaCartShopping>
           <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-            {itemList.items && itemList.items.length && itemList.items.length}
+            {cartItemsCount}
           </div>
         </button>
       </div>

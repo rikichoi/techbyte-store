@@ -2,7 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 const cartSchema = new Schema(
   {
-    totalCost: Number,
     items: Array,
   },
   {
