@@ -40,7 +40,7 @@ export default function Navbar() {
     <div
       className={`${
         active ? "h-[13vh]" : "h-0"
-      } fixed transition-all grid grid-cols-5 px-24 gap-2 items-center delay-150 duration-100 border-b-2 overflow-hidden border-zinc-500 w-full bg-white z-50"`}
+      } fixed transition-all grid grid-cols-5 px-24 gap-2 items-center delay-150 duration-100 border-b-2 overflow-hidden border-zinc-500 w-full bg-white z-[99999]"`}
     >
       <h1 className="text-5xl">Logo</h1>
       <ul className="flex col-span-3 flex-row max-w-2xl w-full justify-between">
@@ -48,7 +48,7 @@ export default function Navbar() {
           <Link href={"/"}>Home</Link>
         </li>
         <li>
-          <Link href={"/"}>Shop</Link>
+          <Link href={"/shop"}>Shop</Link>
         </li>
         <li>
           <Link href={"/"}>Discounts</Link>

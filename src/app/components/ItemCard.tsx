@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { cartContext } from "@/lib/context/cart-context";
+import { get } from "http";
 
 type ItemCardProps = {
   price: number;
@@ -37,6 +38,10 @@ export function ItemCard(props: ItemCardProps) {
   const [cartItemData, setCartItemData] = useState([]);
 
   useEffect(() => {
+    getCart();
+  }, []);
+
+  useEffect(() => {
     if (cart.carts) {
       setCartItemData(cart.carts[0].items);
     }
@@ -45,9 +50,9 @@ export function ItemCard(props: ItemCardProps) {
     }
   }, [cart]);
 
-  const addItemHandler = () => {
+  const addItemHandler = async () => {
     if (cartItemData.some((e) => e.name === props.productName)) {
-      console.log(cartItemData);
+      return;
     } else {
       setCartItemData(
         cartItemData.push({
@@ -56,46 +61,59 @@ export function ItemCard(props: ItemCardProps) {
           quantity: 1,
         })
       );
-      editCart(cart.carts[0]._id, { newItems: cartItemData });
+      await editCart(cart.carts[0]._id, { newItems: cartItemData });
       getCart();
     }
   };
 
   return (
-    <Card className={""} {...props}>
-      <CardHeader>
-        <img src={props.image} alt={props.image}></img>
+    <Card className="grid grid-rows-4 max-h-[64vh]" {...props}>
+      <CardHeader className="row-span-3 w-full">
+        <img
+          className=" flex flex-grow"
+          src={props.image}
+          alt={props.image}
+        ></img>
+        {props.sale == true ? (
+          <div className="right-5 mt-2 bg-[#334fb4] bg-opacity-90 rounded-lg text-white flex px-4 text-sm py-1 ml-auto justify-center w-1/3 ">
+            Sale
+          </div>
+        ) : (
+          ""
+        )}
       </CardHeader>
-      <CardContent className="grid gap-4">
-        <div className=" flex items-center space-x-4 rounded-md border p-4"></div>
+      <CardContent className="">
         <div>
           <div
             key={props.id}
-            className="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
+            className="mb-4 grid grid-cols-[1fr] items-start pb-4 last:mb-0 last:pb-0"
           >
-            <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
-            <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">
+            <div className="grid grid-rows-2">
+              <p className="overflow-hidden text-sm font-medium leading-none">
                 {props.productName}
               </p>
-              <p className="text-sm text-muted-foreground">
-                {props.productName}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {props.description}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                ${props.price.toLocaleString()}
-              </p>
+              <div>
+                <p className="text-sm text-muted-foreground">{props.brand}</p>
+                <div className="text-sm flex items-center flex-row gap-5">
+                  <p className={props.sale == true ? "line-through" : ""}>
+                    {" "}
+                    ${props.price.toFixed(2)}
+                  </p>
+                  {props.sale == true ? (
+                    <p className="text-base"> ${props.discount.toFixed(2)}</p>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="">
         <Button onClick={() => addItemHandler()} className="w-full">
           Add to cart
         </Button>
-        {/* editCart(cart.carts[0]._id, ) */}
       </CardFooter>
     </Card>
   );

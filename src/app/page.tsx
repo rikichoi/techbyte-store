@@ -39,22 +39,22 @@ export default function Home() {
   const Details = [
     {
       name: "FREE DELIVERY",
-      icon: <GiReceiveMoney className="text-3xl"/>,
+      icon: <GiReceiveMoney className="text-3xl" />,
       detail: "For all order over $100",
     },
     {
       name: "30 DAYS RETURN",
-      icon: <FaMoneyBill className="text-3xl"/>,
+      icon: <FaMoneyBill className="text-3xl" />,
       detail: "If goods have problems",
     },
     {
       name: "SECURE PAYMENT",
-      icon: <FaHeadset className="text-3xl"/>,
+      icon: <FaHeadset className="text-3xl" />,
       detail: "100% secure payments",
     },
     {
       name: "24/7 SUPPORT",
-      icon: <FaUndoAlt className="text-3xl"/>,
+      icon: <FaUndoAlt className="text-3xl" />,
       detail: "Dedicated support",
     },
   ];
@@ -68,6 +68,9 @@ export default function Home() {
 
   const handleChange = async (e: any) => {
     if (e.target.type == "number") {
+      setItemData({ ...itemData, [e.target.name]: e.target.valueAsNumber });
+    }
+    if (e.target.type == "float") {
       setItemData({ ...itemData, [e.target.name]: e.target.valueAsNumber });
     }
     if (e.target.type == "text") {
@@ -101,7 +104,7 @@ export default function Home() {
   };
 
   return (
-    <main className="h-full">
+    <main className="h-full ">
       <div id="home" className="min-h-[100vh] pt-[8vh] overflow-hidden">
         <div className="absolute inset-0 -z-10 max-h-[100vh] w-full bg-blue-600 bg-[radial-gradient(#e5e7eb_0.1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div className="relative top-0 -z-10 h-full w-full bg-white"></div>
@@ -144,7 +147,7 @@ export default function Home() {
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
         <div className="grid gap-3 pb-16 grid-cols-4">
-          {items.items?.slice(0, 4).map((item: any) => (
+          {items.items?.filter((item)=>item.sale == true).slice(0, 4).map((item: any) => (
             <ItemCard
               key={item._id}
               price={item && item.price && item.price}
@@ -155,6 +158,8 @@ export default function Home() {
               productName={item && item.productName && item.productName}
               brand={item && item.brand && item.brand}
               id={item && item._id && item._id}
+              sale={item && item.sale && item.sale}
+              discount={item && item.discount && item.discount}
             />
           ))}
         </div>
@@ -198,7 +203,7 @@ export default function Home() {
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
         <div className="grid gap-3 pb-5 grid-cols-4">
-          {items.items?.slice(0, 4).map((item: any) => (
+          {items.items?.slice(4, 8).map((item: any) => (
             <ItemCard
               key={item._id}
               price={item && item.price && item.price}
@@ -209,6 +214,8 @@ export default function Home() {
               productName={item && item.productName && item.productName}
               brand={item && item.brand && item.brand}
               id={item && item._id && item._id}
+              sale={item && item.sale && item.sale}
+              discount={item && item.discount && item.discount}
             />
           ))}
         </div>
@@ -235,6 +242,8 @@ export default function Home() {
               productName={item && item.productName && item.productName}
               brand={item && item.brand && item.brand}
               id={item && item._id && item._id}
+              sale={item && item.sale && item.sale}
+              discount={item && item.discount && item.discount}
             />
           ))}
         </div>
@@ -288,7 +297,7 @@ export default function Home() {
           <input
             placeholder="price"
             className="border-2"
-            type="number"
+            type="float"
             name="price"
             onChange={handleChange}
           />
@@ -328,16 +337,19 @@ export default function Home() {
             onChange={handleChange}
           />
           <input
+            placeholder="discount"
+            className="border-2"
+            type="float"
+            name="discount"
+            onChange={handleChange}
+          />
+          <input
             type="file"
             name="image"
             id="file-upload"
             accept=".jpeg, .png, .jpg"
             onChange={(e) => handleFileUpload(e)}
           />
-
-          <h3>Doris Wilder</h3>
-          <span>Designer</span>
-
           <button type="submit">Submit</button>
         </form>
       </div>

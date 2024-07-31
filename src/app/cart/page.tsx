@@ -19,7 +19,7 @@ export default function Cart() {
     }
   }, [cart]);
 
-  const addQuantity = (productName) => {
+  const addQuantity = async (productName) => {
     let cartIndex = cartItemData.findIndex((obj) => obj.name == productName);
     let itemIndex = items.items.findIndex(
       (obj) => obj.productName == productName
@@ -27,30 +27,35 @@ export default function Cart() {
     cartItemData[cartIndex].quantity += 1;
     cartItemData[cartIndex].price =
       cartItemData[cartIndex].quantity * items.items[itemIndex].price;
-    editCart(cart.carts[0]._id, { newItems: cartItemData });
+    await editCart(cart.carts[0]._id, { newItems: cartItemData });
     getCart();
   };
 
-  const removeQuantity = (productName) => {
+  const removeQuantity = async (productName) => {
     let cartIndex = cartItemData.findIndex((obj) => obj.name == productName);
     let itemIndex = items.items.findIndex(
       (obj) => obj.productName == productName
     );
-    cartItemData[cartIndex].quantity -= 1;
-    cartItemData[cartIndex].price =
-      cartItemData[cartIndex].quantity * items.items[itemIndex].price;
-    editCart(cart.carts[0]._id, { newItems: cartItemData });
-    getCart();
+    if(cartItemData[cartIndex].quantity >= 1){
+      cartItemData[cartIndex].quantity -= 1;
+      cartItemData[cartIndex].price =
+        cartItemData[cartIndex].quantity * items.items[itemIndex].price;
+      await editCart(cart.carts[0]._id, { newItems: cartItemData });
+      getCart();
+    }
+    if(cartItemData[cartIndex].quantity <= 0){
+      return;
+    }
   };
 
-  const removeItem = (productName) => {
+  const removeItem = async (productName) => {
     let cartIndex = cartItemData.findIndex((obj) => obj.name == productName);
     cartItemData.splice(cartIndex, 1);
-    editCart(cart.carts[0]._id, { newItems: cartItemData });
+    await editCart(cart.carts[0]._id, { newItems: cartItemData });
     getCart();
   };
 
-  const handleFocusChange = (productName, e) => {
+  const handleFocusChange = async (productName, e) => {
     let cartIndex = cartItemData.findIndex((obj) => obj.name == productName);
     let itemIndex = items.items.findIndex(
       (obj) => obj.productName == productName
@@ -59,7 +64,7 @@ export default function Cart() {
       cartItemData[cartIndex].quantity = e.target.valueAsNumber;
       cartItemData[cartIndex].price =
         cartItemData[cartIndex].quantity * items.items[itemIndex].price;
-      editCart(cart.carts[0]._id, { newItems: cartItemData });
+      await editCart(cart.carts[0]._id, { newItems: cartItemData });
       getCart();
     }
     if (isNaN(e.target.valueAsNumber)) {
@@ -79,28 +84,30 @@ export default function Cart() {
         </div>
         {cartItemData.map((item, index) => (
           <div key={index} className="grid grid-cols-5">
-            <div className="col-span-2">{item.name}</div>
+            <div className="col-span-2">
+              <p>{item.name}</p>
+            </div>
             <div className="flex col-span-2">
               <button
-                onClick={() => (removeQuantity(item.name), getCart())}
+                onClick={() => (removeQuantity(item.name))}
                 className="border-2 max-w-12 w-full"
               >
                 -
               </button>
               <input
-                onChange={(e) => (handleFocusChange(item.name, e), getCart())}
+                onChange={(e) => (handleFocusChange(item.name, e))}
                 value={item.quantity}
                 type="number"
                 className="border-2 max-w-20 text-center"
               ></input>
               <button
-                onClick={() => (addQuantity(item.name), getCart())}
+                onClick={() => (addQuantity(item.name))}
                 className="border-2 max-w-12 w-full"
               >
                 +
               </button>
               <button
-                onClick={() => (removeItem(item.name), getCart())}
+                onClick={() => (removeItem(item.name))}
                 className="border-2 w-full"
               >
                 REMOVE
