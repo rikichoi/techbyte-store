@@ -32,7 +32,7 @@ export default function CartContextProvider({ children }) {
       console.log(error);
     }
   };
-
+  
   const getCart = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/carts/", {

@@ -43,6 +43,13 @@ export default function Cart() {
     getCart();
   };
 
+  const removeItem = (productName) => {
+    let cartIndex = cartItemData.findIndex((obj) => obj.name == productName);
+    cartItemData.splice(cartIndex, 1);
+    editCart(cart.carts[0]._id, { newItems: cartItemData });
+    getCart();
+  };
+
   const handleFocusChange = (productName, e) => {
     let cartIndex = cartItemData.findIndex((obj) => obj.name == productName);
     let itemIndex = items.items.findIndex(
@@ -66,14 +73,14 @@ export default function Cart() {
 
       <div className="flex flex-col">
         <div className="grid grid-cols-5">
-          <div className="col-span-3">PRODUCT</div>
-          <div className="">QUANTITY</div>
+          <div className="col-span-2">PRODUCT</div>
+          <div className="col-span-2">QUANTITY</div>
           <div className="">TOTAL</div>
         </div>
         {cartItemData.map((item, index) => (
           <div key={index} className="grid grid-cols-5">
-            <div className="col-span-3">{item.name}</div>
-            <div className="flex">
+            <div className="col-span-2">{item.name}</div>
+            <div className="flex col-span-2">
               <button
                 onClick={() => (removeQuantity(item.name), getCart())}
                 className="border-2 max-w-12 w-full"
@@ -91,6 +98,12 @@ export default function Cart() {
                 className="border-2 max-w-12 w-full"
               >
                 +
+              </button>
+              <button
+                onClick={() => (removeItem(item.name), getCart())}
+                className="border-2 w-full"
+              >
+                REMOVE
               </button>
             </div>
             <div className="">{item.price}</div>
