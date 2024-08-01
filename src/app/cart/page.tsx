@@ -2,11 +2,22 @@
 import React, { useEffect, useState, useContext } from "react";
 import { cartContext } from "@/lib/context/cart-context";
 import { itemContext } from "@/lib/context/item-context";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import CheckoutForm from "../components/CheckoutForm";
+
+if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
+  throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined");
+}
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function Cart() {
   const { items, postItem } = useContext(itemContext);
   const { cart, editCart, getCart } = useContext(cartContext);
   const [cartItemData, setCartItemData] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalDisplayAmount, setTotalDisplayAmount] = useState(0);
   const [updatedCartItemData, setUpdatedCartItemData] = useState([]);
   const [cartItemQuantity, setCartItemQuantity] = useState([]);
 
@@ -19,16 +30,38 @@ export default function Cart() {
     }
   }, [cart]);
 
+  const updateTotal = () => {
+    let total = 0;
+    for (var i = 0, len = cartItemData.length; i < len; i++) {
+      total += cartItemData[i].price;
+    }
+    setTotalDisplayAmount(total);
+    setTotalAmount(Math.round(total*100));
+  };
+
+  useEffect(() => {
+    if (cartItemData) {
+      updateTotal();
+    }
+    if (!cartItemData) {
+      return;
+    }
+  }, [cartItemData]);
+
   const addQuantity = async (productName) => {
     let cartIndex = cartItemData.findIndex((obj) => obj.name == productName);
     let itemIndex = items.items.findIndex(
       (obj) => obj.productName == productName
     );
     cartItemData[cartIndex].quantity += 1;
-    cartItemData[cartIndex].price =
-      cartItemData[cartIndex].quantity * items.items[itemIndex].price;
+    cartItemData[cartIndex].price = parseInt(
+      (cartItemData[cartIndex].quantity * items.items[itemIndex].price).toFixed(
+        2
+      )
+    );
     await editCart(cart.carts[0]._id, { newItems: cartItemData });
-    getCart();
+    await getCart();
+    updateTotal();
   };
 
   const removeQuantity = async (productName) => {
@@ -36,14 +69,18 @@ export default function Cart() {
     let itemIndex = items.items.findIndex(
       (obj) => obj.productName == productName
     );
-    if(cartItemData[cartIndex].quantity >= 1){
+    if (cartItemData[cartIndex].quantity >= 1) {
       cartItemData[cartIndex].quantity -= 1;
-      cartItemData[cartIndex].price =
-        cartItemData[cartIndex].quantity * items.items[itemIndex].price;
+      cartItemData[cartIndex].price = parseInt(
+        (
+          cartItemData[cartIndex].quantity * items.items[itemIndex].price
+        ).toFixed(2)
+      );
       await editCart(cart.carts[0]._id, { newItems: cartItemData });
-      getCart();
+      await getCart();
+      updateTotal();
     }
-    if(cartItemData[cartIndex].quantity <= 0){
+    if (cartItemData[cartIndex].quantity <= 0) {
       return;
     }
   };
@@ -52,7 +89,8 @@ export default function Cart() {
     let cartIndex = cartItemData.findIndex((obj) => obj.name == productName);
     cartItemData.splice(cartIndex, 1);
     await editCart(cart.carts[0]._id, { newItems: cartItemData });
-    getCart();
+    await getCart();
+    updateTotal();
   };
 
   const handleFocusChange = async (productName, e) => {
@@ -62,10 +100,14 @@ export default function Cart() {
     );
     if (!isNaN(e.target.valueAsNumber)) {
       cartItemData[cartIndex].quantity = e.target.valueAsNumber;
-      cartItemData[cartIndex].price =
-        cartItemData[cartIndex].quantity * items.items[itemIndex].price;
+      cartItemData[cartIndex].price = parseInt(
+        (
+          cartItemData[cartIndex].quantity * items.items[itemIndex].price
+        ).toFixed(2)
+      );
       await editCart(cart.carts[0]._id, { newItems: cartItemData });
-      getCart();
+      await getCart();
+      updateTotal();
     }
     if (isNaN(e.target.valueAsNumber)) {
       return;
@@ -89,25 +131,25 @@ export default function Cart() {
             </div>
             <div className="flex col-span-2">
               <button
-                onClick={() => (removeQuantity(item.name))}
+                onClick={() => removeQuantity(item.name)}
                 className="border-2 max-w-12 w-full"
               >
                 -
               </button>
               <input
-                onChange={(e) => (handleFocusChange(item.name, e))}
+                onChange={(e) => handleFocusChange(item.name, e)}
                 value={item.quantity}
                 type="number"
                 className="border-2 max-w-20 text-center"
               ></input>
               <button
-                onClick={() => (addQuantity(item.name))}
+                onClick={() => addQuantity(item.name)}
                 className="border-2 max-w-12 w-full"
               >
                 +
               </button>
               <button
-                onClick={() => (removeItem(item.name))}
+                onClick={() => removeItem(item.name)}
                 className="border-2 w-full"
               >
                 REMOVE
@@ -116,6 +158,26 @@ export default function Cart() {
             <div className="">{item.price}</div>
           </div>
         ))}
+        <div>
+          <p className="font-bold text-lg py-10">Total Amount: {totalDisplayAmount}</p>
+        </div>
+        <div>
+          {totalAmount < 20 ? (
+            ""
+          ) : (
+            <Elements
+              stripe={stripePromise}
+              options={{
+                mode: "payment",
+                amount: totalAmount,
+                appearance: { theme: "stripe" },
+                currency: "usd",
+              }}
+            >
+              <CheckoutForm amount={totalAmount} displayAmount={totalDisplayAmount}/>
+            </Elements>
+          )}
+        </div>
       </div>
     </div>
   );
