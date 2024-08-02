@@ -5,16 +5,22 @@ import {
   useState,
   Dispatch,
   useEffect,
+  ReactNode,
 } from "react";
 
 export const itemContext = createContext({
-  items: [],
+  items: {items:[]},
   postItem: async (itemData: {}) => {},
   getItems: async () => {},
 });
 
-export default function ItemContextProvider({ children }) {
-  const [items, setItems] = useState([]);
+
+type ItemContextProviderProps = {
+  children: ReactNode
+}
+
+export default function ItemContextProvider({ children }:ItemContextProviderProps) {
+  const [items, setItems] = useState({items:[]});
 
   const postItem = async (itemData: {}) => {
     try {

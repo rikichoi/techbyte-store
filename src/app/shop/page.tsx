@@ -24,84 +24,108 @@ export default function Shop() {
     discount: 0,
   };
   const [itemData, setItemData] = useState(InitialState);
+  const [sortFilter, setSortFilter] = useState(
+    "(a, b) => new Date(b.createdAt) - new Date(a.createdAt)"
+  );
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [brandFilter, setBrandFilter] = useState("");
 
-  const Catalogue = [
+  const sortOptions = [
     {
-      name: "Items Up To 50% Off",
-      bgImage: "bg-[url('../images/catalogue-bg1.png')]",
+      type: "Newest",
+      value: "(a, b) => new Date(b.createdAt) - new Date(a.createdAt)",
     },
     {
-      name: "Pre-Built Systems",
-      bgImage: "bg-[url('../images/catalogue-bg2.png')]",
-    },
-  ];
-
-  const Details = [
-    {
-      name: "FREE DELIVERY",
-      icon: <GiReceiveMoney className="text-3xl" />,
-      detail: "For all order over $100",
+      type: "Oldest",
+      value: "(a, b) => new Date(a.createdAt) - new Date(b.createdAt)",
     },
     {
-      name: "30 DAYS RETURN",
-      icon: <FaMoneyBill className="text-3xl" />,
-      detail: "If goods have problems",
+      type: "Highest Price",
+      value: "(a, b) => b.price - a.price",
     },
     {
-      name: "SECURE PAYMENT",
-      icon: <FaHeadset className="text-3xl" />,
-      detail: "100% secure payments",
-    },
-    {
-      name: "24/7 SUPPORT",
-      icon: <FaUndoAlt className="text-3xl" />,
-      detail: "Dedicated support",
+      type: "Lowest Price",
+      value: "(a, b) => a.price - b.price",
     },
   ];
 
-  const handleFileUpload = async (e: any) => {
-    const file = e.target.files[0];
-    const base64 = await convertToBase64(file);
-    console.log(base64);
-    setItemData({ ...itemData, [e.target.name]: base64 });
-  };
+  const categoryOptions = [
+    {
+      type: "Any Category",
+      value: "",
+    },
+    {
+      type: "Case",
+      value: "Case",
+    },
+    {
+      type: "Processor",
+      value: "Processor",
+    },
+    {
+      type: "Power Supply",
+      value: "Power Supply",
+    },
+    {
+      type: "Graphics Card",
+      value: "Graphics Card",
+    },
+    {
+      type: "Motherboard",
+      value: "Motherboard",
+    },
+    {
+      type: "Memory",
+      value: "Memory",
+    },
+    {
+      type: "Core",
+      value: "Core",
+    },
+  ];
 
-  const handleChange = async (e: any) => {
-    if (e.target.type == "number") {
-      setItemData({ ...itemData, [e.target.name]: e.target.valueAsNumber });
-    }
-    if (e.target.type == "float") {
-      setItemData({ ...itemData, [e.target.name]: e.target.valueAsNumber });
-    }
-    if (e.target.type == "text") {
-      setItemData({ ...itemData, [e.target.name]: e.target.value });
-    }
-    if (e.target.type == "radio") {
-      setItemData({
-        ...itemData,
-        [e.target.name]: Boolean(parseInt(e.target.value)),
-      });
-    }
-  };
-
-  function convertToBase64(file: any) {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  }
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    postItem(itemData);
-    console.log("Uploaded");
-  };
+  const brandOptions = [
+    {
+      type: "Any Brand",
+      value: "",
+    },
+    {
+      type: "INTEL",
+      value: "INTEL",
+    },
+    {
+      type: "NVIDIA",
+      value: "NVIDIA",
+    },
+    {
+      type: "AMD",
+      value: "AMD",
+    },
+    {
+      type: "ASUS",
+      value: "ASUS",
+    },
+    {
+      type: "CORSAIR",
+      value: "CORSAIR",
+    },
+    {
+      type: "FRACTAL DESIGN",
+      value: "FRACTAL DESIGN",
+    },
+    {
+      type: "BE QUIET!",
+      value: "BE QUIET!",
+    },
+    {
+      type: "MSI",
+      value: "MSI",
+    },
+    {
+      type: "NZXT",
+      value: "NZXT",
+    },
+  ];
 
   return (
     <main className="h-full pt-[18vh]">
@@ -109,33 +133,90 @@ export default function Shop() {
         id="products"
         className="min-h-[100vh] px-48 flex flex-col gap-3 font-poppins "
       >
-        <h2 className="text-4xl">Products</h2>
-        <h3 className="text-sm font-light">
-          INSERT FILTERING SYSTEM
-        </h3>
-        <div className="grid gap-3 pb-16 grid-cols-4">
-          {items.items?.map((item: any) => (
-            <ItemCard
-              key={item._id}
-              price={item && item.price && item.price}
-              description={item && item.description && item.description}
-              image={item && item.image && item.image}
-              type={item && item.type && item.type}
-              stock={item && item.stock && item.stock}
-              productName={item && item.productName && item.productName}
-              brand={item && item.brand && item.brand}
-              id={item && item._id && item._id}
-              sale={item && item.sale && item.sale}
-              discount={item && item.discount && item.discount}
-            />
-          ))}
+        <h2 className="text-4xl pb-10">Products</h2>
+        <div className="grid grid-cols-2">
+          <div className="flex flex-row items-center">
+            <h4 className="pr-2 text-sm font-light">Filter:</h4>
+            <select
+              id="categoryOptions"
+              defaultValue={"Any Category"}
+              className="text-base xxxs:text-sm xxs:text-sm bg-white p-1 border-2 hover:cursor-pointer rounded-lg"
+              name="categoryOptions"
+            >
+              {categoryOptions.map((options) => (
+                <option
+                  onClick={() => setCategoryFilter(options.value)}
+                  label={options.type}
+                  key={options.type}
+                  value={options.value}
+                ></option>
+              ))}
+            </select>
+            <select
+              id="brandOptions"
+              defaultValue={"Any Brand"}
+              className="text-base xxxs:text-sm xxs:text-sm ml-2 bg-white p-1 border-2 hover:cursor-pointer rounded-lg"
+              name="brandOptions"
+            >
+              {brandOptions.map((options) => (
+                <option
+                  onClick={() => setBrandFilter(options.value)}
+                  label={options.type}
+                  key={options.type}
+                  value={options.value}
+                ></option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-row justify-end items-center">
+            <h4 className="pr-2 text-sm font-light">Sort By:</h4>
+            <select
+              id="sortOptions"
+              defaultValue={"Newest"}
+              className="text-base xxxs:text-sm xxs:text-sm bg-white p-1 border-2 hover:cursor-pointer rounded-lg"
+              name="sortOptions"
+            >
+              {sortOptions.map((options) => (
+                <option
+                  onClick={() =>
+                    setSortFilter(options.value.replace(/^"(.*)"$/, "$1"))
+                  }
+                  label={options.type}
+                  key={options.type}
+                  value={options.value}
+                ></option>
+              ))}
+            </select>
+            <h4 className="pl-10 pr-2 text-sm font-light">
+              {items.items?.length} products
+            </h4>
+          </div>
         </div>
-        <button
-          onClick={() => console.log(items)}
-          className="text-white bg-zinc-900 py-4 px-8 hover:shadow-2xl transition-all duration-200"
-        >
-          View all
-        </button>
+        <div className="grid gap-3 pb-16 grid-cols-4">
+          {items.items
+            ?.filter(
+              (item) =>
+                item.type.includes(categoryFilter) &&
+                item.brand.includes(brandFilter)
+            )
+            .sort(eval(sortFilter))
+            .map((item: any) => (
+              <ItemCard
+                key={item._id}
+                price={item && item.price && item.price}
+                description={item && item.description && item.description}
+                image={item && item.image && item.image}
+                type={item && item.type && item.type}
+                stock={item && item.stock && item.stock}
+                productName={item && item.productName && item.productName}
+                brand={item && item.brand && item.brand}
+                id={item && item._id && item._id}
+                sale={item && item.sale && item.sale}
+                discount={item && item.discount && item.discount}
+                createdAt={item && item.createdAt && item.createdAt}
+              />
+            ))}
+        </div>
       </div>
     </main>
   );

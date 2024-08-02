@@ -5,6 +5,8 @@ import { FaCartShopping } from "react-icons/fa6";
 import { Badge } from "@/components/ui/badge";
 import { cartContext } from "@/lib/context/cart-context";
 import Cart from "../cart/page";
+import Logo from "@/images/logo.png";
+import Image from "next/image";
 
 export default function Navbar() {
   const { cart, editCart } = useContext(cartContext);
@@ -42,8 +44,8 @@ export default function Navbar() {
         active ? "h-[13vh]" : "h-0"
       } fixed transition-all grid grid-cols-5 px-24 gap-2 items-center delay-150 duration-100 border-b-2 overflow-hidden border-zinc-500 w-full bg-white z-[99999]"`}
     >
-      <h1 className="text-5xl">Logo</h1>
-      <ul className="flex col-span-3 flex-row max-w-2xl w-full justify-between">
+      <Image src={Logo} ></Image>
+      <ul className="flex col-span-3 flex-row max-w-2xl w-full items-center ml-auto justify-between">
         <li>
           <Link href={"/"}>Home</Link>
         </li>
@@ -67,7 +69,7 @@ export default function Navbar() {
         <Link
           type="button"
           href={"/cart"}
-          className="relative max-w-8 inline-flex items-center text-sm font-medium justify-center text-center  focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="relative max-w-8 inline-flex items-center text-sm font-medium justify-center text-center hover:scale-110 transition-all duration-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           <FaCartShopping className="text-3xl text-[#15b7b9]"></FaCartShopping>
           <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">

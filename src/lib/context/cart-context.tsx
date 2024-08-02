@@ -5,16 +5,21 @@ import {
   useState,
   Dispatch,
   useEffect,
+  ReactNode,
 } from "react";
 
 export const cartContext = createContext({
-  cart: [],
+  cart: {},
   editCart: async (id: string, newItems: []) => {},
   getCart: async () => {},
 });
 
-export default function CartContextProvider({ children }) {
-  const [cart, setCart] = useState([]);
+type CartContextProviderProps = {
+  children: ReactNode
+}
+
+export default function CartContextProvider({ children }: CartContextProviderProps) {
+  const [cart, setCart] = useState({});
 
   const editCart = async (id: string, newItems: []) => {
     try {

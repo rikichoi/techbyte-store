@@ -115,12 +115,12 @@ export default function Home() {
                 DISCOVER LATEST DISCOUNT TECH PRODUCTS
               </h3>
               <h1 className="text-5xl">Spring Sales 2024</h1>
-              <Link
-                href={""}
+              <button
+                onClick={()=>console.log(items)}
                 className="bg-blue-500 py-4 px-6 border-2 border-black hover:border-white transition-all duration-200"
               >
                 SHOP NOW
-              </Link>
+              </button>
             </div>
           </div>
           <div className="flex items-center">
@@ -147,7 +147,7 @@ export default function Home() {
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
         <div className="grid gap-3 pb-16 grid-cols-4">
-          {items.items?.filter((item)=>item.sale == true).slice(0, 4).map((item: any) => (
+          {items.items.filter((item:any)=>item.sale == true).slice(0, 4).map((item: any) => (
             <ItemCard
               key={item._id}
               price={item && item.price && item.price}

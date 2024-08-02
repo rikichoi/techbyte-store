@@ -36,7 +36,7 @@ export default function Cart() {
       total += cartItemData[i].price;
     }
     setTotalDisplayAmount(total);
-    setTotalAmount(Math.round(total*100));
+    setTotalAmount(Math.round(total * 100));
   };
 
   useEffect(() => {
@@ -140,7 +140,7 @@ export default function Cart() {
                 onChange={(e) => handleFocusChange(item.name, e)}
                 value={item.quantity}
                 type="number"
-                className="border-2 max-w-20 text-center"
+                className="[appearance:textfield] border-2 max-w-20 text-center"
               ></input>
               <button
                 onClick={() => addQuantity(item.name)}
@@ -159,10 +159,32 @@ export default function Cart() {
           </div>
         ))}
         <div>
-          <p className="font-bold text-lg py-10">Total Amount: {totalDisplayAmount}</p>
+          <p className="font-bold text-lg py-10">
+            Total Amount: {totalDisplayAmount}
+          </p>
         </div>
-        <div>
-          {totalAmount < 20 ? (
+        <div className="flex items-center justify-center flex-col pb-10">
+          <p className="font-bold text-center text-orange-500">
+            Demo Payment Details
+          </p>
+          <p className=" text-center font-semibold">
+            Card numbers:
+          </p>
+          <ul className="list-disc">
+            <li>4242 4242 4242 4242</li>
+            <li>4000 0566 5566 5556</li>
+            <li>5555 5555 5555 4444</li>
+          </ul>
+          <p className=" text-center">
+            <span className="font-semibold">Expiration date:</span> Any future date{" "}
+          </p>
+          <p className=" text-center">
+            <span className="font-semibold">Security code:</span> Any 3 digits{" "}
+          </p>
+          <p className=" text-center">
+            <span className="font-semibold">Country:</span> Any Country{" "}
+          </p>
+          {totalAmount ==  0 ? (
             ""
           ) : (
             <Elements
@@ -174,7 +196,10 @@ export default function Cart() {
                 currency: "usd",
               }}
             >
-              <CheckoutForm amount={totalAmount} displayAmount={totalDisplayAmount}/>
+              <CheckoutForm
+                amount={totalAmount}
+                displayAmount={totalDisplayAmount}
+              />
             </Elements>
           )}
         </div>

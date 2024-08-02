@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cartContext } from "@/lib/context/cart-context";
 import { get } from "http";
+import Link from "next/link";
 
 type ItemCardProps = {
   price: number;
@@ -31,6 +32,7 @@ type ItemCardProps = {
   id: string;
   sale: boolean;
   discount: number;
+  createdAt: string;
 };
 
 export function ItemCard(props: ItemCardProps) {
@@ -68,7 +70,8 @@ export function ItemCard(props: ItemCardProps) {
 
   return (
     <Card className="grid grid-rows-4 max-h-[64vh]" {...props}>
-      <CardHeader className="row-span-3 w-full">
+      <CardHeader className="row-span-3 w-full hover:scale-105">
+        <a href={`/product?name=${props.productName}`}>
         <img
           className=" flex flex-grow"
           src={props.image}
@@ -81,6 +84,7 @@ export function ItemCard(props: ItemCardProps) {
         ) : (
           ""
         )}
+        </a>
       </CardHeader>
       <CardContent className="">
         <div>
@@ -89,9 +93,9 @@ export function ItemCard(props: ItemCardProps) {
             className="mb-4 grid grid-cols-[1fr] items-start pb-4 last:mb-0 last:pb-0"
           >
             <div className="grid grid-rows-2">
-              <p className="overflow-hidden text-sm font-medium leading-none">
+              <Link href={`/product?name=${props.productName}`} className="overflow-hidden hover:underline text-sm font-medium leading-none">
                 {props.productName}
-              </p>
+              </Link>
               <div>
                 <p className="text-sm text-muted-foreground">{props.brand}</p>
                 <div className="text-sm flex items-center flex-row gap-5">
@@ -111,7 +115,7 @@ export function ItemCard(props: ItemCardProps) {
         </div>
       </CardContent>
       <CardFooter className="">
-        <Button onClick={() => addItemHandler()} className="w-full">
+        <Button onClick={() => console.log(props)} className="w-full">
           Add to cart
         </Button>
       </CardFooter>

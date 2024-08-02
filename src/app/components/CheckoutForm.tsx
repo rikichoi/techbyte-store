@@ -49,11 +49,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `${
-          process.env.NODE_ENV === "production"
-            ? "http://localhost:3000"
-            : "http://localhost:3000"
-        }/payment-success`,
+        return_url: "http://localhost:3000/payment-success",
       },
     });
   };
