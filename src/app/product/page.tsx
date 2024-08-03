@@ -44,7 +44,7 @@ export default function Product() {
   };
 
   const handleFocusChange = (e) => {
-    if (!isNaN(e.target.valueAsNumber)) {
+    if (!isNaN(e.target.valueAsNumber) && e.target.valueAsNumber > 0) {
       setItemQuantity(e.target.valueAsNumber);
     }
     if (isNaN(e.target.valueAsNumber)) {
@@ -54,7 +54,7 @@ export default function Product() {
 
   const addItemHandler = async () => {
     if (cartItemData.some((e) => e.name === itemData[0].productName)) {
-      console.log("this item already exists in cart")
+      console.log("this item already exists in cart");
     } else {
       setCartItemData(
         cartItemData.push({
@@ -113,7 +113,7 @@ export default function Product() {
               <div className="">
                 <button
                   onClick={() => removeQuantity()}
-                  className="border-2 max-w-12 w-full"
+                  className="border-2 py-2  max-w-12 w-full"
                 >
                   -
                 </button>
@@ -121,11 +121,11 @@ export default function Product() {
                   onChange={(e) => handleFocusChange(e)}
                   value={itemQuantity}
                   type="number"
-                  className="[appearance:textfield] focus:scale-105 border-2 max-w-20 text-center"
+                  className="[appearance:textfield] py-2 focus:scale-105 border-2 max-w-20 text-center"
                 ></input>
                 <button
                   onClick={() => addQuantity()}
-                  className="border-2 max-w-12 w-full"
+                  className="border-2 py-2  max-w-12 w-full"
                 >
                   +
                 </button>

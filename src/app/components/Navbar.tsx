@@ -42,28 +42,28 @@ export default function Navbar() {
     <div
       className={`${
         active ? "h-[13vh]" : "h-0"
-      } fixed transition-all grid grid-cols-5 px-24 gap-2 items-center delay-150 duration-100 border-b-2 overflow-hidden border-zinc-500 w-full bg-white z-[99999]"`}
+      } fixed font-poppins transition-all grid grid-cols-5 px-24 gap-2 items-center delay-150 duration-100 border-b-2 overflow-hidden border-zinc-500 w-full bg-white z-50"`}
     >
-      <Image src={Logo} ></Image>
+      <Image alt="Logo Image" src={Logo} ></Image>
       <ul className="flex col-span-3 flex-row max-w-2xl w-full items-center ml-auto justify-between">
         <li>
-          <Link href={"/"}>Home</Link>
+          <Link className="hover:underline decoration-2" href={"/"}>Home</Link>
         </li>
         <li>
-          <Link href={"/shop"}>Shop</Link>
+          <Link className="hover:underline decoration-2" href={"/shop"}>Shop</Link>
         </li>
         <li>
-          <Link href={"/"}>Discounts</Link>
+          <Link className="hover:underline decoration-2" href={"/discount"}>Discounts</Link>
         </li>
         <li>
-          <Link href={"/"}>Contact</Link>
+          <Link className="hover:underline decoration-2" href={"/contact"}>Contact</Link>
         </li>
         <li>
-          <Link href={"/"}>Blog</Link>
+          <Link className="hover:underline decoration-2" href={"/blog"}>Blog</Link>
         </li>
-        <li>
-          <Link href={"/"}>Register/Sign In</Link>
-        </li>
+        {/* <li>
+          <Link className="hover:underline decoration-2" href={"/"}>Register/Sign In</Link>
+        </li> */}
       </ul>
       <div className="w-full  justify-end items-end flex">
         <Link

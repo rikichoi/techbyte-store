@@ -9,8 +9,13 @@ import { GiReceiveMoney } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
 import { FaHeadset } from "react-icons/fa";
 import { FaUndoAlt } from "react-icons/fa";
+import VrImage from "@/images/medium-shot-man-holding-controllers.webp";
+import PhoneImage from "@/images/mobile-phone-cases-mockup-product-showcase.webp";
+import StemImage from "@/images/close-up-hand-holding-smartphone.webp";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const { items, postItem } = useContext(itemContext);
   const InitialState = {
     price: 0,
@@ -116,7 +121,7 @@ export default function Home() {
               </h3>
               <h1 className="text-5xl">Spring Sales 2024</h1>
               <button
-                onClick={()=>console.log(items)}
+                onClick={() => console.log(items)}
                 className="bg-blue-500 py-4 px-6 border-2 border-black hover:border-white transition-all duration-200"
               >
                 SHOP NOW
@@ -146,24 +151,28 @@ export default function Home() {
         <h3 className="text-sm font-light">
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
-        <div className="grid gap-3 pb-16 grid-cols-4">
-          {items.items.filter((item:any)=>item.sale == true).slice(0, 4).map((item: any) => (
-            <ItemCard
-              key={item._id}
-              price={item && item.price && item.price}
-              description={item && item.description && item.description}
-              image={item && item.image && item.image}
-              type={item && item.type && item.type}
-              stock={item && item.stock && item.stock}
-              productName={item && item.productName && item.productName}
-              brand={item && item.brand && item.brand}
-              id={item && item._id && item._id}
-              sale={item && item.sale && item.sale}
-              discount={item && item.discount && item.discount}
-            />
-          ))}
+        <div className="grid gap-3 pb-10 grid-cols-4">
+          {items.items
+            .filter((item: any) => item.sale == true)
+            .slice(0, 4)
+            .map((item: any) => (
+              <ItemCard
+                key={item._id}
+                price={item && item.price && item.price}
+                description={item && item.description && item.description}
+                image={item && item.image && item.image}
+                type={item && item.type && item.type}
+                stock={item && item.stock && item.stock}
+                productName={item && item.productName && item.productName}
+                brand={item && item.brand && item.brand}
+                id={item && item._id && item._id}
+                sale={item && item.sale && item.sale}
+                discount={item && item.discount && item.discount}
+                createdAt={item && item.createdAt && item.createdAt}
+              />
+            ))}
         </div>
-        <button className="text-white bg-zinc-900 py-4 px-8 hover:shadow-2xl transition-all duration-200">
+        <button className="text-white bg-zinc-900 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl  py-4 px-8 transition-all duration-200">
           View all
         </button>
       </div>
@@ -188,7 +197,7 @@ export default function Home() {
         <div className="col-span-5 bg-[url('../images/build-bg1.jpg')] h-full w-full bg-cover bg-center"></div>
         <div className="col-span-2 max-h-[100vh] flex gap-10 flex-col justify-center items-start px-10">
           <h1 className="text-5xl"> Hunt For Your Next Build </h1>
-          <button className="text-white bg-zinc-900 py-4 px-8 hover:shadow-2xl transition-all duration-200">
+          <button className="text-white bg-zinc-900 py-4 px-8 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl transition-all duration-200">
             Click Here
           </button>
         </div>
@@ -202,7 +211,7 @@ export default function Home() {
         <h3 className="text-sm font-light">
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
-        <div className="grid gap-3 pb-5 grid-cols-4">
+        <div className="grid gap-3 pb-10 grid-cols-4">
           {items.items?.slice(4, 8).map((item: any) => (
             <ItemCard
               key={item._id}
@@ -216,42 +225,83 @@ export default function Home() {
               id={item && item._id && item._id}
               sale={item && item.sale && item.sale}
               discount={item && item.discount && item.discount}
+              createdAt={item && item.createdAt && item.createdAt}
             />
           ))}
         </div>
-        <button className="text-white bg-zinc-900 py-4 px-8 hover:shadow-2xl transition-all duration-200">
+        <button className="text-white bg-zinc-900 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl py-4 px-8 transition-all duration-200">
           View all
         </button>
       </div>
-
       <div
         id="blog"
-        className="min-h-[100vh] py-[8vh] px-48 flex flex-col gap-10 font-poppins items-center justify-start"
+        className="min-h-[60vh] px-48 flex flex-col gap-10 font-poppins items-center justify-start"
       >
         <h2 className="text-4xl">Our Latest Blogs</h2>
         <h3 className="text-sm font-light">Trending Tech News</h3>
-        <div className="grid gap-3 pb-5 grid-cols-3">
-          {items.items?.slice(0, 3).map((item: any) => (
-            <ItemCard
-              key={item._id}
-              price={item && item.price && item.price}
-              description={item && item.description && item.description}
-              image={item && item.image && item.image}
-              type={item && item.type && item.type}
-              stock={item && item.stock && item.stock}
-              productName={item && item.productName && item.productName}
-              brand={item && item.brand && item.brand}
-              id={item && item._id && item._id}
-              sale={item && item.sale && item.sale}
-              discount={item && item.discount && item.discount}
-            />
-          ))}
+        <div className="grid grid-cols-3 gap-3 pb-5">
+          <div
+            onClick={() => router.push("/blog?id=Save Battery on iOS 16")}
+            className="hover:cursor-pointer group h-full"
+          >
+            <div className=" overflow-hidden h-min mb-5">
+              <Image
+                alt="Vr Headset Image"
+                className="h-[33vh] object-cover group-hover:scale-105 transition-all duration-300 -z-10"
+                src={VrImage}
+              ></Image>
+            </div>
+            <h2 className="group-hover:underline text-2xl">Best VR Headset</h2>
+            <h3 className="text-sm font-light">Febuary 24, 2024</h3>
+            <p className="py-2 text-sm font-light">
+              The best new VR gaming headset experience for PlayStation
+            </p>
+          </div>
+          <div
+            onClick={() => router.push("/blog?id=Save Battery on iOS 16")}
+            className="hover:cursor-pointer group h-full"
+          >
+            <div className=" overflow-hidden h-min mb-5">
+              <Image
+                alt="STEM Image"
+                className="h-[33vh] object-cover group-hover:scale-105 transition-all duration-300 -z-10"
+                src={StemImage}
+              ></Image>
+            </div>
+            <h2 className="group-hover:underline text-2xl">
+              Community Partnership Series
+            </h2>
+            <h3 className="text-sm font-light">Febuary 24, 2024</h3>
+            <p className="py-2 text-sm font-light">
+              Teaming up with local support organisations to create STEM
+              opportunities
+            </p>
+          </div>
+          <div
+            onClick={() => router.push("/blog?id=Save Battery on iOS 16")}
+            className="hover:cursor-pointer group h-full"
+          >
+            <div className=" overflow-hidden h-min mb-5">
+              <Image
+                alt="Iphone Image"
+                className="h-[33vh] object-cover group-hover:scale-105 transition-all duration-300 -z-10"
+                src={PhoneImage}
+              ></Image>
+            </div>
+            <h2 className="group-hover:underline text-2xl">
+              Save Battery on iOS 16
+            </h2>
+            <h3 className="text-sm font-light">Febuary 24, 2024</h3>
+            <p className="py-2 text-sm font-light">
+              Disable these 2 iOS 16 features to save on battery life
+            </p>
+          </div>
         </div>
       </div>
 
       <div
         id="details"
-        className="min-h-[20vh] py-[8vh] px-48 flex flex-row gap-10 font-poppins items-center justify-center"
+        className="min-h-[20vh] py-[14vh] px-48 flex flex-row gap-10 font-poppins items-center justify-center"
       >
         <div className="grid gap-3 pb-5 grid-cols-4 w-full">
           {Details.map((item, index) => (
@@ -266,7 +316,7 @@ export default function Home() {
         </div>
       </div>
 
-      <button
+      {/* <button
         onClick={() => console.log(itemData)}
         className="w-20 h-12 bg-green-500 "
       >
@@ -352,7 +402,7 @@ export default function Home() {
           />
           <button type="submit">Submit</button>
         </form>
-      </div>
+      </div> */}
     </main>
   );
 }

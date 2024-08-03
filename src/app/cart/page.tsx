@@ -5,6 +5,7 @@ import { itemContext } from "@/lib/context/item-context";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "../components/CheckoutForm";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
   throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined");
@@ -54,7 +55,7 @@ export default function Cart() {
       (obj) => obj.productName == productName
     );
     cartItemData[cartIndex].quantity += 1;
-    cartItemData[cartIndex].price = parseInt(
+    cartItemData[cartIndex].price = Number(
       (cartItemData[cartIndex].quantity * items.items[itemIndex].price).toFixed(
         2
       )
@@ -69,9 +70,9 @@ export default function Cart() {
     let itemIndex = items.items.findIndex(
       (obj) => obj.productName == productName
     );
-    if (cartItemData[cartIndex].quantity >= 1) {
+    if (cartItemData[cartIndex].quantity > 1) {
       cartItemData[cartIndex].quantity -= 1;
-      cartItemData[cartIndex].price = parseInt(
+      cartItemData[cartIndex].price = Number(
         (
           cartItemData[cartIndex].quantity * items.items[itemIndex].price
         ).toFixed(2)
@@ -100,7 +101,7 @@ export default function Cart() {
     );
     if (!isNaN(e.target.valueAsNumber)) {
       cartItemData[cartIndex].quantity = e.target.valueAsNumber;
-      cartItemData[cartIndex].price = parseInt(
+      cartItemData[cartIndex].price = Number(
         (
           cartItemData[cartIndex].quantity * items.items[itemIndex].price
         ).toFixed(2)
@@ -115,17 +116,17 @@ export default function Cart() {
   };
 
   return (
-    <div className="pt-44 px-52 space-y-12">
+    <div className="pt-44 px-52 font-poppins space-y-12">
       <h1 className="text-5xl">Your cart</h1>
 
       <div className="flex flex-col">
-        <div className="grid grid-cols-5">
-          <div className="col-span-2">PRODUCT</div>
-          <div className="col-span-2">QUANTITY</div>
-          <div className="">TOTAL</div>
+        <div className="grid pb-5 grid-cols-5">
+          <div className="col-span-2 text-xs font-light">PRODUCT</div>
+          <div className="col-span-2 text-xs font-light">QUANTITY</div>
+          <div className="text-xs font-light">TOTAL</div>
         </div>
         {cartItemData.map((item, index) => (
-          <div key={index} className="grid grid-cols-5">
+          <div key={index} className="grid items-center grid-cols-5 border-b-2 py-5">
             <div className="col-span-2">
               <p>{item.name}</p>
             </div>
@@ -140,7 +141,7 @@ export default function Cart() {
                 onChange={(e) => handleFocusChange(item.name, e)}
                 value={item.quantity}
                 type="number"
-                className="[appearance:textfield] border-2 max-w-20 text-center"
+                className="[appearance:textfield] focus:scale-105 border-2 max-w-20 text-center"
               ></input>
               <button
                 onClick={() => addQuantity(item.name)}
@@ -148,19 +149,17 @@ export default function Cart() {
               >
                 +
               </button>
-              <button
+              <RiDeleteBin6Line 
                 onClick={() => removeItem(item.name)}
-                className="border-2 w-full"
-              >
-                REMOVE
-              </button>
+                className="text-5xl ml-5 hover:cursor-pointer hover:scale-105"
+              />
             </div>
-            <div className="">{item.price}</div>
+            <div className="">${item.price.toLocaleString()}</div>
           </div>
         ))}
         <div>
           <p className="font-bold text-lg py-10">
-            Total Amount: {totalDisplayAmount}
+            Total Amount: ${totalDisplayAmount.toLocaleString()}
           </p>
         </div>
         <div className="flex items-center justify-center flex-col pb-10">

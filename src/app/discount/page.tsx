@@ -10,7 +10,7 @@ import { FaMoneyBill } from "react-icons/fa";
 import { FaHeadset } from "react-icons/fa";
 import { FaUndoAlt } from "react-icons/fa";
 
-export default function Shop() {
+export default function Discount() {
   const { items, postItem, getItems } = useContext(itemContext);
   const InitialState = {
     price: 0,
@@ -133,9 +133,9 @@ export default function Shop() {
         id="products"
         className="min-h-[100vh] px-48 flex flex-col gap-3 font-poppins "
       >
-        <h2 className="text-4xl">Products</h2>
+        <h2 className="text-4xl">Featured Discounts</h2>
         <h3 className="text-xl font-light pb-10">
-          Shop for the latest tech products.
+          Tech products going on sale.
         </h3>
         <div className="grid grid-cols-2">
           <div className="flex flex-row items-center">
@@ -207,6 +207,7 @@ export default function Shop() {
           {items.items
             ?.filter(
               (item) =>
+                item.sale == true &&
                 item.type.includes(categoryFilter) &&
                 item.brand.includes(brandFilter)
             )

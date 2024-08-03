@@ -69,31 +69,33 @@ export function ItemCard(props: ItemCardProps) {
   };
 
   return (
-    <Card className="grid grid-rows-4 max-h-[64vh]" {...props}>
-      <CardHeader className="row-span-3 w-full hover:scale-105">
-        <a href={`/product?name=${props.productName}`}>
-        <img
-          className=" flex flex-grow"
-          src={props.image}
-          alt={props.image}
-        ></img>
+    <Card className="grid grid-rows-4 max-h-[68vh]" {...props}>
+      <CardHeader className="row-span-3 group overflow-hidden w-full items-center p-0 ">
+        <a
+          className="max-h-[40vh] h-full object-cover group-hover:scale-105 transition-all duration-300"
+          href={`/product?name=${props.productName}`}
+        >
+          <img className="h-[35vh]" src={props.image} alt={props.image}></img>
+        </a>
         {props.sale == true ? (
-          <div className="right-5 mt-2 bg-[#334fb4] bg-opacity-90 rounded-lg text-white flex px-4 text-sm py-1 ml-auto justify-center w-1/3 ">
+          <div className="ml-auto mr-3 bg-[#334fb4] bg-opacity-90 rounded-lg text-white flex px-4 text-sm justify-center py-1 w-[10vh] ">
             Sale
           </div>
         ) : (
           ""
         )}
-        </a>
       </CardHeader>
-      <CardContent className="">
+      <CardContent className="pt-2">
         <div>
           <div
             key={props.id}
             className="mb-4 grid grid-cols-[1fr] items-start pb-4 last:mb-0 last:pb-0"
           >
             <div className="grid grid-rows-2">
-              <Link href={`/product?name=${props.productName}`} className="overflow-hidden hover:underline text-sm font-medium leading-none">
+              <Link
+                href={`/product?name=${props.productName}`}
+                className="overflow-hidden hover:underline text-sm font-medium leading-none"
+              >
                 {props.productName}
               </Link>
               <div>
@@ -115,7 +117,7 @@ export function ItemCard(props: ItemCardProps) {
         </div>
       </CardContent>
       <CardFooter className="">
-        <Button onClick={() => console.log(props)} className="w-full">
+        <Button onClick={() => addItemHandler()} className="w-full">
           Add to cart
         </Button>
       </CardFooter>
