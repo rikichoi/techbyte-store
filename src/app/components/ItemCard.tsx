@@ -69,7 +69,7 @@ export function ItemCard(props: ItemCardProps) {
   };
 
   return (
-    <Card className="grid grid-rows-4 max-h-[68vh]" {...props}>
+    <Card className="grid grid-rows-4 text-ellipsis max-h-[68vh]" {...props}>
       <CardHeader className="row-span-3 group overflow-hidden w-full items-center p-0 ">
         <a
           className="max-h-[40vh] h-full object-cover group-hover:scale-105 transition-all duration-300"
@@ -78,14 +78,14 @@ export function ItemCard(props: ItemCardProps) {
           <img className="h-[35vh]" src={props.image} alt={props.image}></img>
         </a>
         {props.sale == true ? (
-          <div className="ml-auto mr-3 bg-[#334fb4] bg-opacity-90 rounded-lg text-white flex px-4 text-sm justify-center py-1 w-[10vh] ">
+          <div className="ml-auto mr-3 bg-[#334fb4] bg-opacity-90 rounded-lg text-white flex px-4 text-sm justify-center z-10 py-1 w-[10vh] ">
             Sale
           </div>
         ) : (
           ""
         )}
       </CardHeader>
-      <CardContent className="pt-2">
+      <CardContent className="pt-2 max-h-[15vh]">
         <div>
           <div
             key={props.id}
@@ -94,11 +94,11 @@ export function ItemCard(props: ItemCardProps) {
             <div className="grid grid-rows-2">
               <Link
                 href={`/product?name=${props.productName}`}
-                className="overflow-hidden hover:underline text-sm font-medium leading-none"
+                className="text-ellipsis hover:text-clip hover:text-wrap text-nowrap overflow-hidden hover:underline text-sm font-medium leading-none"
               >
                 {props.productName}
               </Link>
-              <div>
+              <div className="">
                 <p className="text-sm text-muted-foreground">{props.brand}</p>
                 <div className="text-sm flex items-center flex-row gap-5">
                   <p className={props.sale == true ? "line-through" : ""}>

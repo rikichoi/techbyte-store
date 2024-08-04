@@ -5,6 +5,7 @@ import { itemContext } from "@/lib/context/item-context";
 import { Button } from "@/components/ui/button";
 import { ItemCard } from "../components/ItemCard";
 import { cartContext } from "@/lib/context/cart-context";
+import Link from "next/link";
 
 export default function Product() {
   const { cart, editCart, getCart } = useContext(cartContext);
@@ -165,9 +166,9 @@ export default function Product() {
             />
           ))}
         </div>
-        <button className="text-white bg-zinc-900 py-4 px-8 hover:shadow-2xl transition-all duration-200">
+        <Link href={"/shop"} className="text-white bg-zinc-900 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl  py-4 px-8 transition-all duration-200">
           View all
-        </button>
+        </Link>
       </div>
     </div>
   );

@@ -162,7 +162,8 @@ export default function Cart() {
             Total Amount: ${totalDisplayAmount.toLocaleString()}
           </p>
         </div>
-        <div className="flex items-center justify-center flex-col pb-10">
+        <div className="flex items-center gap-28 justify-center flex-row pb-10">
+          <div className="flex flex-col items-center justify-center">
           <p className="font-bold text-center text-orange-500">
             Demo Payment Details
           </p>
@@ -183,6 +184,7 @@ export default function Cart() {
           <p className=" text-center">
             <span className="font-semibold">Country:</span> Any Country{" "}
           </p>
+          </div>
           {totalAmount ==  0 ? (
             ""
           ) : (

@@ -13,10 +13,12 @@ import VrImage from "@/images/medium-shot-man-holding-controllers.webp";
 import PhoneImage from "@/images/mobile-phone-cases-mockup-product-showcase.webp";
 import StemImage from "@/images/close-up-hand-holding-smartphone.webp";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { navbarContext } from "@/lib/context/navbar-context";
 
 export default function Home() {
   const router = useRouter();
   const { items, postItem } = useContext(itemContext);
+  const { showModal, setShowModal } = useContext(navbarContext);
   const InitialState = {
     price: 0,
     description: "",
@@ -109,27 +111,27 @@ export default function Home() {
   };
 
   return (
-    <main className="h-full ">
+    <main className={showModal?"h-full":"h-full"}>
       <div id="home" className="min-h-[100vh] pt-[8vh] overflow-hidden">
         <div className="absolute inset-0 -z-10 max-h-[100vh] w-full bg-blue-600 bg-[radial-gradient(#e5e7eb_0.1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div className="relative top-0 -z-10 h-full w-full bg-white"></div>
-        <div className="w-full min-h-[100vh] gap-x-20 grid grid-cols-2">
-          <div className="flex items-center font-poppins text-white justify-end">
-            <div className="flex gap-y-7 flex-col items-center">
+        <div className="w-full min-h-[92vh] gap-x-20 grid sm:grid-cols-1 lg:grid-cols-2 sm:grid-rows-3">
+          <div className="flex sm:row-span-1 lg:row-span-3 items-center font-poppins text-white sm:justify-center lg:justify-end">
+            <div className="flex sm:pt-12 lg:pt-0 sm:gap-y-4 lg:gap-y-7 flex-col items-center">
               <h3 className="text-sm font-light">
                 DISCOVER LATEST DISCOUNT TECH PRODUCTS
               </h3>
               <h1 className="text-5xl">Spring Sales 2024</h1>
-              <button
-                onClick={() => console.log(items)}
-                className="bg-blue-500 py-4 px-6 border-2 border-black hover:border-white transition-all duration-200"
+              <Link
+                href={"/shop"}
+                className="bg-blue-500 sm:mt-5 lg:mt-0 py-4 px-6 border-2 border-black hover:border-white transition-all duration-200"
               >
                 SHOP NOW
-              </button>
+              </Link>
             </div>
           </div>
-          <div className="flex items-center">
-            <div className="grid grid-cols-2 h-2/3 w-2/3 gap-5">
+          <div className="lg:justify-start sm:row-span-2 lg:row-span-3 sm:justify-center flex items-center">
+            <div className="grid grid-cols-2 sm:h-5/6 sm:w-5/6 lg:h-2/3 lg:w-2/3 gap-5">
               <div className="grid grid-rows-2 gap-5">
                 <div className="bg-[url('../images/home-bg1.jpg')] h-full w-full rounded-2xl bg-cover bg-center"></div>
                 <div className="bg-[url('../images/home-bg2.jpg')] h-full w-full rounded-2xl bg-cover bg-center"></div>
@@ -145,13 +147,13 @@ export default function Home() {
 
       <div
         id="featured"
-        className="min-h-[100vh] px-48 flex flex-col gap-3 font-poppins items-center justify-start"
+        className="min-h-[100vh] pt-[12vh] sm:px-5 lg:px-48 flex flex-col gap-3 font-poppins items-center justify-start"
       >
         <h2 className="text-4xl">Featured Products</h2>
         <h3 className="text-sm font-light">
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
-        <div className="grid gap-3 pb-10 grid-cols-4">
+        <div className="grid gap-3 lg:pb-10 sm:grid-cols-2 lg:grid-cols-4">
           {items.items
             .filter((item: any) => item.sale == true)
             .slice(0, 4)
@@ -172,12 +174,15 @@ export default function Home() {
               />
             ))}
         </div>
-        <button className="text-white bg-zinc-900 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl  py-4 px-8 transition-all duration-200">
+        <Link
+          href={"/shop"}
+          className="text-white sm:my-8 bg-zinc-900 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl  py-4 px-8 transition-all duration-200"
+        >
           View all
-        </button>
+        </Link>
       </div>
 
-      <div className="min-h-[100vh] font-poppins pb-[8vh] gap-3 px-48 grid grid-cols-2">
+      <div className="min-h-[100vh] font-poppins pb-[8vh] gap-3 sm:px-5 lg:px-48 grid grid-cols-2">
         {Catalogue.map((item, index) => (
           <div key={index} className="bg-gray-100 w-full h-4/5">
             <div
@@ -193,25 +198,28 @@ export default function Home() {
         ))}
       </div>
 
-      <div className="min-h-[100vh] font-poppins px-48 gap-3 grid grid-cols-7">
+      <div className="min-h-[100vh] font-poppins sm:px-5 lg:px-48 gap-3 grid grid-cols-7">
         <div className="col-span-5 bg-[url('../images/build-bg1.jpg')] h-full w-full bg-cover bg-center"></div>
-        <div className="col-span-2 max-h-[100vh] flex gap-10 flex-col justify-center items-start px-10">
+        <div className="col-span-2 max-h-[100vh] flex gap-10 flex-col justify-center items-start sm:px-0 lg:px-10">
           <h1 className="text-5xl"> Hunt For Your Next Build </h1>
-          <button className="text-white bg-zinc-900 py-4 px-8 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl transition-all duration-200">
+          <Link
+            href={"/shop"}
+            className="text-white bg-zinc-900 py-4 px-8 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl transition-all duration-200"
+          >
             Click Here
-          </button>
+          </Link>
         </div>
       </div>
 
       <div
         id="popular"
-        className="min-h-[100vh] py-[8vh] px-48 flex flex-col gap-3 font-poppins items-center justify-start"
+        className="min-h-[100vh] py-[8vh] sm:px-5 lg:px-48 flex flex-col gap-3 font-poppins items-center justify-start"
       >
         <h2 className="text-4xl">Popular Products</h2>
         <h3 className="text-sm font-light">
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
-        <div className="grid gap-3 pb-10 grid-cols-4">
+        <div className="grid gap-3 pb-10 sm:grid-cols-2 lg:grid-cols-4">
           {items.items?.slice(4, 8).map((item: any) => (
             <ItemCard
               key={item._id}
@@ -229,17 +237,20 @@ export default function Home() {
             />
           ))}
         </div>
-        <button className="text-white bg-zinc-900 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl py-4 px-8 transition-all duration-200">
+        <Link
+          href={"/shop"}
+          className="text-white bg-zinc-900 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl py-4 px-8 transition-all duration-200"
+        >
           View all
-        </button>
+        </Link>
       </div>
       <div
         id="blog"
-        className="min-h-[60vh] px-48 flex flex-col gap-10 font-poppins items-center justify-start"
+        className="min-h-[60vh] sm:px-5 lg:px-48 flex flex-col gap-10 font-poppins items-center justify-start"
       >
         <h2 className="text-4xl">Our Latest Blogs</h2>
         <h3 className="text-sm font-light">Trending Tech News</h3>
-        <div className="grid grid-cols-3 gap-3 pb-5">
+        <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-3 pb-5">
           <div
             onClick={() => router.push("/blog?id=Save Battery on iOS 16")}
             className="hover:cursor-pointer group h-full"
@@ -301,9 +312,9 @@ export default function Home() {
 
       <div
         id="details"
-        className="min-h-[20vh] py-[14vh] px-48 flex flex-row gap-10 font-poppins items-center justify-center"
+        className="min-h-[20vh] sm:py-[8vh] lg:py-[14vh] sm:px-5 lg:px-48 flex flex-row gap-10 font-poppins items-center justify-center"
       >
-        <div className="grid gap-3 pb-5 grid-cols-4 w-full">
+        <div className="grid gap-3 pb-5 sm:grid-cols-2 lg:grid-cols-4 w-full">
           {Details.map((item, index) => (
             <div key={index} className="grid items-center grid-cols-5">
               {item.icon}
