@@ -10,14 +10,12 @@ const config = {
 	],
   prefix: "",
   theme: {
-    // screens: {
-    //   // xxxs: { max: "600px" },
-    //   // xxs: { max: "871px", min: "600px" },
-    //   // xs: { max: "1158px", min: "871px" },
-    //   // sm: { min: "0px" },
-    //   // md: { min: "1480px" },
-    //   // => @media (min-width: 640px) { ... }
-    // },
+    screens: {
+      xs: { max: "640px" },
+      sm: { min: "640px" },
+      lg: { min: "1316px" },
+      // => @media (min-width: 640px) { ... }
+    },
     container: {
       center: true,
       padding: "2rem",

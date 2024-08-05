@@ -130,20 +130,20 @@ export default function Discount() {
   return (
     <main className="h-full font-poppins pt-[18vh]">
       <div
-        id="products"
-        className="min-h-[100vh] px-48 flex flex-col gap-3 font-poppins "
+        id="featured"
+        className="min-h-[100vh] xs:px-4 sm:px-4 lg:px-48 flex flex-col gap-3 font-poppins "
       >
-        <h2 className="text-4xl">Featured Discounts</h2>
-        <h3 className="text-xl font-light pb-10">
+        <h2 className="xs:text-3xl text-4xl">Featured Discounts</h2>
+        <h3 className="xs:text-base text-xl font-light pb-10">
           Tech products going on sale.
         </h3>
-        <div className="grid grid-cols-2">
+        <div className="grid xs:gap-2 grid-cols-2 xs:grid-cols-1">
           <div className="flex flex-row items-center">
             <h4 className="pr-2 text-sm font-light">Filter:</h4>
             <select
               id="categoryOptions"
               defaultValue={"Any Category"}
-              className="text-base xxxs:text-sm xxs:text-sm bg-white p-1 border-2 hover:cursor-pointer rounded-lg"
+              className="xs:text-xs sm:text-xs text-base xxxs:text-sm xxs:text-sm bg-white p-1 border-2 hover:cursor-pointer rounded-lg"
               name="categoryOptions"
             >
               {categoryOptions.map((options) => (
@@ -158,7 +158,7 @@ export default function Discount() {
             <select
               id="brandOptions"
               defaultValue={"Any Brand"}
-              className="text-base xxxs:text-sm xxs:text-sm ml-2 bg-white p-1 border-2 hover:cursor-pointer rounded-lg"
+              className="xs:text-xs sm:text-xs text-base ml-2 bg-white p-1 border-2 hover:cursor-pointer rounded-lg"
               name="brandOptions"
             >
               {brandOptions.map((options) => (
@@ -176,7 +176,7 @@ export default function Discount() {
             <select
               id="sortOptions"
               defaultValue={"Newest"}
-              className="text-base xxxs:text-sm xxs:text-sm bg-white p-1 border-2 hover:cursor-pointer rounded-lg"
+              className="xs:text-xs sm:text-xs text-base bg-white p-1 border-2 hover:cursor-pointer rounded-lg"
               name="sortOptions"
             >
               {sortOptions.map((options) => (
@@ -190,7 +190,7 @@ export default function Discount() {
                 ></option>
               ))}
             </select>
-            <h4 className="pl-10 pr-2 text-sm font-light">
+            <h4 className="pl-10 xs:pl-0 xs:ml-auto xs:text-end xs:pr-0 pr-2 text-sm font-light">
               {
                 items.items?.filter(
                   (item) =>
@@ -203,7 +203,7 @@ export default function Discount() {
             </h4>
           </div>
         </div>
-        <div className="grid gap-3 pb-16 grid-cols-4">
+        <div className="grid gap-3 pb-16 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {items.items
             ?.filter(
               (item) =>

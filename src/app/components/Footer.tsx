@@ -8,8 +8,8 @@ import { FaLinkedin } from "react-icons/fa6";
 
 export default function Footer() {
   return (
-    <div className="px-40 pt-16 pb-24 border-t-2 font-poppins grid grid-cols-4">
-      <div className="grid grid-rows-5 gap-5">
+    <div className="lg:px-40 sm:px-4 xs:px-4 pt-16 pb-24 border-t-2 font-poppins grid xs:text-center lg:grid-cols-4 sm:grid-cols-2 xs:grid-cols-1">
+      <div className="grid grid-rows-5 gap-5 xs:mx-auto sm:pb-10 xs:pb-10">
         <Image alt="logo" src={Logo} className="max-w-44 row-span-2"></Image>
         <div className="row-span-3">
           <p>45 Damian Street</p>
@@ -39,7 +39,7 @@ export default function Footer() {
         <h1 className="text-2xl">Let&apos;s Connect!</h1>
         <div className="row-span-3 grid gap-2">
           <p>Connect with agents, build your network, make great business.</p>
-          <div className="grid grid-cols-4">
+          <div className="grid grid-cols-4 xs:mx-auto xs:gap-2">
             <button className="hover:bg-zinc-900 flex justify-center items-center rounded-full w-14 h-14 bg-orange-400"><FaFacebookSquare className="text-xl text-white"/></button>
             <button className="hover:bg-zinc-900 flex justify-center items-center rounded-full w-14 h-14 bg-orange-400"><FaSquareTwitter className="text-xl text-white"/></button>
             <button className="hover:bg-zinc-900 flex justify-center items-center rounded-full w-14 h-14 bg-orange-400"><IoLogoYoutube className="text-xl text-white"/></button>

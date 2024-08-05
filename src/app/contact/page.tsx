@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Contact() {
   return (
-    <div className="pt-36 px-[20vw]">
+    <div className="pt-36 px-[20vw] xs:px-4">
       <h1 className="text-4xl pb-10 font-bold">CONTACT</h1>
       <div className="font-poppins font-bold gap-10 flex flex-row items-center justify-center">
         <div className="grid gap-5 w-full sm:grid-cols-1 lg:grid-cols-2">
@@ -30,7 +30,7 @@ export default function Contact() {
       </div>
       <div className="w-full flex justify-end py-5 items-end">
         <button
-          className="bg-cyan-600 hover:bg-cyan-300 hover:text-black transition-all duration-500 text-white font-semibold z-50 py-5 text-center max-w-40 w-full text-xl"
+          className="bg-cyan-600 hover:bg-cyan-300 hover:text-black transition-all duration-500 text-white font-semibold py-5 text-center max-w-40 w-full text-xl"
         >
           SEND
         </button>

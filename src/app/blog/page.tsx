@@ -92,7 +92,7 @@ export default function Blog() {
     );
   }
   return (
-    <div className="pt-36 pb-24 px-52 font-poppins gap-8 flex flex-col">
+    <div className="pt-36 pb-24 lg:px-52 sm:px-12 xs:px-4 font-poppins gap-8 flex flex-col">
       <h1 className="text-4xl">Blogs</h1>
       <button
         onClick={() => router.push(`${pathname}?id=Best VR Headset`)}
@@ -121,7 +121,7 @@ export default function Blog() {
           <div className=" overflow-hidden h-min mb-5">
             <Image
               alt="STEM Image"
-              className="max-h-[42vh] object-cover group-hover:scale-105 transition-all duration-300 -z-10"
+              className="h-[42vh] object-cover group-hover:scale-105 transition-all duration-300 -z-10"
               src={StemImage}
             ></Image>
           </div>
@@ -141,7 +141,7 @@ export default function Blog() {
           <div className=" overflow-hidden h-min mb-5">
             <Image
               alt="Iphone Image"
-              className="max-h-[42vh] object-cover group-hover:scale-105 transition-all duration-300 -z-10"
+              className="h-[42vh] object-cover group-hover:scale-105 transition-all duration-300 -z-10"
               src={PhoneImage}
             ></Image>
           </div>

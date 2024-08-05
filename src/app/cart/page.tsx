@@ -116,7 +116,7 @@ export default function Cart() {
   };
 
   return (
-    <div className="pt-44 px-52 font-poppins space-y-12">
+    <div className="pt-44 lg:px-52 sm:px-4 xs:px-4 font-poppins space-y-12">
       <h1 className="text-5xl">Your cart</h1>
 
       <div className="flex flex-col">
@@ -162,7 +162,7 @@ export default function Cart() {
             Total Amount: ${totalDisplayAmount.toLocaleString()}
           </p>
         </div>
-        <div className="flex items-center gap-28 justify-center flex-row pb-10">
+        <div className="flex items-center sm:gap-4 xs:gap-4 lg:gap-28 justify-center flex-row pb-10">
           <div className="flex flex-col items-center justify-center">
           <p className="font-bold text-center text-orange-500">
             Demo Payment Details

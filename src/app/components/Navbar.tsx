@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import HamburgerModal from "./HamburgerMenu";
 import { navbarContext } from "@/lib/context/navbar-context";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { RxCross2 } from "react-icons/rx";
 
 export default function Navbar() {
   const router = useRouter();
@@ -55,19 +56,23 @@ export default function Navbar() {
     <div
       className={`${
         active ? "h-[13vh] z-50" : "h-0 z-50"
-      } fixed font-poppins transition-all px-14 lg:grid sm:flex sm:flex-row sm:justify-between lg:grid-cols-5 gap-2 items-center delay-150 duration-100 border-b-2 overflow-hidden border-zinc-500 w-full bg-white z-50"`}
+      } fixed font-poppins transition-all xs:px-12 sm:px-14 lg:px-14 lg:grid xs:flex xs:flex-row xs:justify-between sm:flex sm:flex-row sm:justify-between lg:grid-cols-5 gap-2 items-center delay-150 duration-100 border-b-2 overflow-hidden border-zinc-500 w-full bg-white z-50"`}
     >
       {showModal ? <HamburgerModal /> : ""}
-      <div className="lg:hidden sm:flex">
+      <div className="lg:hidden xs:flex sm:flex">
         <button
           type="button"
           onClick={() => setShowModal(!showModal)}
           className="relative max-w-7 inline-flex items-center text-sm font-medium justify-center text-center hover:scale-110 transition-all duration-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
-          <RxHamburgerMenu className="text-3xl text-[#15b7b9]"></RxHamburgerMenu>
+          {showModal ? (
+            <RxCross2 className="text-3xl text-[#15b7b9]"></RxCross2>
+          ) : (
+            <RxHamburgerMenu className="text-3xl text-[#15b7b9]"></RxHamburgerMenu>
+          )}
         </button>
       </div>
-      <div className="flex sm:justify-center lg:justify-end">
+      <div className="flex max-w-[389px] xs:justify-center sm:justify-center lg:justify-end">
         <Image
           onClick={() => router.push("/")}
           alt="Logo Image"
@@ -75,7 +80,7 @@ export default function Navbar() {
           src={Logo}
         ></Image>
       </div>
-      <ul className="sm:hidden lg:flex lg:col-span-3 tracking-tight text-zinc-800 text-sm px-20 flex-row max-w-2xl mr-auto w-full items-center justify-between">
+      <ul className="xs:hidden sm:hidden lg:flex lg:col-span-3 tracking-tight text-zinc-800 text-sm px-20 flex-row max-w-2xl mr-auto w-full items-center justify-between">
         <li>
           <Link className="hover:underline decoration-2" href={"/"}>
             Home
