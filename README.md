@@ -14,9 +14,9 @@
 
 Below is a non-exhaustive list of technologies used throughout the project:
 
-| Front-end | Back-end |
-| --- | --- |
-| React | MongoDB |
-| NextJS |  |
-| TailwindCSS | |
-| ShadCN | |
+| Front-end | Back-end | Payment |
+| --- | --- | --- |
+| React | MongoDB | Stripe|
+| NextJS |  | |
+| TailwindCSS | | |
+| ShadCN | | |
