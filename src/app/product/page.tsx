@@ -70,9 +70,9 @@ export default function Product() {
   };
 
   return (
-    <div className="px-44 font-poppins pt-40 flex flex-col">
-      <div className="grid grid-cols-5 max-h-screen">
-        <div className="col-span-3 max-h-screen">
+    <div className="xs:px-5 sm:px-12 lg:px-44 font-poppins pt-40 flex flex-col">
+      <div className="grid sm:grid-cols-1 lg:grid-cols-5 xs:max-h-[120vh] sm:max-h-[140vh] lg:max-h-[120vh]">
+        <div className="col-span-3 flex xs:justify-center xs:items-center sm:justify-center sm:items-center lg:justify-center lg:items-start max-h-screen">
           {itemData[0] ? (
             <img
               className="sticky border-2 -z-10 top-20 max-h-[80vh] h-full max-w-[40vw]"
@@ -89,7 +89,7 @@ export default function Product() {
               <h3 className="text-sm text-muted-foreground">
                 {itemData[0].brand}
               </h3>
-              <h1 className="text-4xl">{itemData[0].productName}</h1>
+              <h1 className="xs:text-2xl sm:text-2xl lg:text-4xl">{itemData[0].productName}</h1>
               <div className="text-base flex items-center flex-row gap-5">
                 <p className={itemData[0].sale == true ? "line-through" : ""}>
                   {" "}
@@ -135,7 +135,12 @@ export default function Product() {
                 Add to cart
               </Button>
             </div>
-            <div className="row-span-3">{itemData[0].description}</div>
+            <div className="row-span-3 flex xs:text-lg sm:text-lg lg:text-lg ">
+              <ul className="list-disc space-y-2 pl-4 pt-5">
+                {(itemData[0].description).map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul></div>
           </div>
         ) : (
           ""
@@ -143,13 +148,13 @@ export default function Product() {
       </div>
       <div
         id="popular"
-        className="min-h-[100vh] py-[8vh] flex flex-col gap-3 font-poppins items-center justify-start"
+        className="min-h-[100vh] pb-[8vh] flex flex-col gap-3 font-poppins items-center justify-start"
       >
-        <h2 className="text-4xl">You may also like</h2>
+        <h2 className="xs:text-2xl sm:text-2xl lg:text-4xl">You may also like</h2>
         <h3 className="text-sm font-light">
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
-        <div className="grid gap-3 pb-5 grid-cols-4">
+        <div className="grid gap-3 pb-5 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {items.items?.slice(4, 8).map((item: any) => (
             <ItemCard
               key={item._id}
@@ -163,6 +168,7 @@ export default function Product() {
               id={item && item._id && item._id}
               sale={item && item.sale && item.sale}
               discount={item && item.discount && item.discount}
+              createdAt={item && item.createdAt && item.createdAt}
             />
           ))}
         </div>
