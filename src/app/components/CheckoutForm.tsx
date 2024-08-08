@@ -15,7 +15,7 @@ type CheckoutFormProps = {
 export default function CheckoutForm(props: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +32,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
     }
   }, [props.amount]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!stripe || !elements) {
       return;
@@ -50,6 +50,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
       clientSecret,
       confirmParams: {
         return_url: "http://localhost:3000/payment-success",
+        // return_url: "http://localhost:3000/payment-success",
       },
     });
   };

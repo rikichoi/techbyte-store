@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useState, useEffect, useContext, cache, Key } from "react";
 import { ItemCard } from "@/app/components/ItemCard";
-import { itemContext } from "@/lib/context/item-context";
+import { ItemContext } from "@/lib/context/item-context";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import { GiReceiveMoney } from "react-icons/gi";
@@ -11,7 +11,7 @@ import { FaHeadset } from "react-icons/fa";
 import { FaUndoAlt } from "react-icons/fa";
 
 export default function Discount() {
-  const { items, postItem, getItems } = useContext(itemContext);
+  const itemContext = useContext(ItemContext);
   const InitialState = {
     price: 0,
     description: "",
@@ -191,20 +191,20 @@ export default function Discount() {
               ))}
             </select>
             <h4 className="pl-10 xs:pl-0 xs:ml-auto xs:text-end xs:pr-0 pr-2 text-sm font-light">
-              {
-                items.items?.filter(
-                  (item) =>
-                    item.sale == true &&
-                    item.type.includes(categoryFilter) &&
-                    item.brand.includes(brandFilter)
-                ).length
-              }{" "}
+              {itemContext && itemContext.items
+                ? itemContext.items.filter(
+                    (item) =>
+                      item.sale == true &&
+                      item.type.includes(categoryFilter) &&
+                      item.brand.includes(brandFilter)
+                  ).length
+                : ""}{" "}
               products
             </h4>
           </div>
         </div>
         <div className="grid gap-3 pb-16 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {items.items
+          {itemContext&&itemContext.items ? itemContext.items
             ?.filter(
               (item) =>
                 item.sale == true &&
@@ -227,7 +227,7 @@ export default function Discount() {
                 discount={item && item.discount && item.discount}
                 createdAt={item && item.createdAt && item.createdAt}
               />
-            ))}
+            )):""}
         </div>
       </div>
     </main>

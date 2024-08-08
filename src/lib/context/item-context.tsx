@@ -8,19 +8,35 @@ import {
   ReactNode,
 } from "react";
 
-export const itemContext = createContext({
-  items: {items:[]},
-  postItem: async (itemData: {}) => {},
-  getItems: async () => {},
-});
 
+export type Item = {
+  price: number;
+  description: Array<string>; // Specify the type of elements in the array
+  image: string;
+  type: string;
+  stock: number;
+  productName: string;
+  brand: string;
+  id: string;
+  sale: boolean;
+  discount: number;
+  createdAt: string;
+};
+
+export type ItemContextType = {
+  items: Item[]|null;
+  postItem: ((itemData: {}) => Promise<void>) | null;
+  getItems: (() => Promise<void>) | null;
+}
+
+export const ItemContext = createContext({} as ItemContextType);
 
 type ItemContextProviderProps = {
   children: ReactNode
 }
 
 export default function ItemContextProvider({ children }:ItemContextProviderProps) {
-  const [items, setItems] = useState({items:[]});
+  const [items, setItems] = useState<Item[]|null>(null);
 
   const postItem = async (itemData: {}) => {
     try {
@@ -44,7 +60,8 @@ export default function ItemContextProvider({ children }:ItemContextProviderProp
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
-      return setItems(await res.json());
+      let data = await res.json();
+      return setItems(data.items);
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +72,7 @@ export default function ItemContextProvider({ children }:ItemContextProviderProp
   }, []);
 
   return (
-    <itemContext.Provider
+    <ItemContext.Provider
       value={{
         items,
         postItem,
@@ -63,6 +80,6 @@ export default function ItemContextProvider({ children }:ItemContextProviderProp
       }}
     >
       {children}
-    </itemContext.Provider>
+    </ItemContext.Provider>
   );
 }

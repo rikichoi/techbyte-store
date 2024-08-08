@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useState, useEffect, useContext, cache, Key } from "react";
 import { ItemCard } from "@/app/components/ItemCard";
-import { itemContext } from "@/lib/context/item-context";
+import { ItemContext } from "@/lib/context/item-context";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import { GiReceiveMoney } from "react-icons/gi";
@@ -15,9 +15,10 @@ import StemImage from "@/images/close-up-hand-holding-smartphone.webp";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { navbarContext } from "@/lib/context/navbar-context";
 
+
 export default function Home() {
   const router = useRouter();
-  const { items, postItem } = useContext(itemContext);
+  const itemContext = useContext(ItemContext);
   const { showModal, setShowModal } = useContext(navbarContext);
   const InitialState = {
     price: 0,
@@ -106,12 +107,14 @@ export default function Home() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    postItem(itemData);
-    console.log("Uploaded");
+    if (itemContext && itemContext.postItem) {
+      itemContext.postItem(itemData);
+      console.log("Uploaded");
+    }
   };
 
   return (
-    <main className={showModal?"h-full":"h-full"}>
+    <main className={showModal ? "h-full" : "h-full"}>
       <div id="home" className="min-h-[100vh] pt-[8vh] overflow-hidden">
         <div className="absolute inset-0 -z-10 max-h-[100vh] w-full bg-blue-600 bg-[radial-gradient(#e5e7eb_0.1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div className="relative top-0 -z-10 h-full w-full bg-white"></div>
@@ -121,7 +124,9 @@ export default function Home() {
               <h3 className="xs:text-xs sm:text-sm lg:text-sm font-light">
                 DISCOVER LATEST DISCOUNT TECH PRODUCTS
               </h3>
-              <h1 className="xs:text-3xl sm:text-4xl lg:text-5xl">Spring Sales 2024</h1>
+              <h1 className="xs:text-3xl sm:text-4xl lg:text-5xl">
+                Spring Sales 2024
+              </h1>
               <Link
                 href={"/shop"}
                 className="bg-blue-500 xs:mt-5 sm:mt-5 lg:mt-0 py-4 px-6 border-2 border-black hover:border-white transition-all duration-200"
@@ -154,25 +159,27 @@ export default function Home() {
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
         <div className="grid gap-3 lg:pb-10 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {items.items
-            .filter((item: any) => item.sale == true)
-            .slice(0, 4)
-            .map((item: any) => (
-              <ItemCard
-                key={item._id}
-                price={item && item.price && item.price}
-                description={item && item.description && item.description}
-                image={item && item.image && item.image}
-                type={item && item.type && item.type}
-                stock={item && item.stock && item.stock}
-                productName={item && item.productName && item.productName}
-                brand={item && item.brand && item.brand}
-                id={item && item._id && item._id}
-                sale={item && item.sale && item.sale}
-                discount={item && item.discount && item.discount}
-                createdAt={item && item.createdAt && item.createdAt}
-              />
-            ))}
+          {itemContext && itemContext.items
+            ? itemContext.items
+                .filter((item: any) => item.sale == true)
+                .slice(0, 4)
+                .map((item: any) => (
+                  <ItemCard
+                    key={item._id}
+                    price={item && item.price && item.price}
+                    description={item && item.description && item.description}
+                    image={item && item.image && item.image}
+                    type={item && item.type && item.type}
+                    stock={item && item.stock && item.stock}
+                    productName={item && item.productName && item.productName}
+                    brand={item && item.brand && item.brand}
+                    id={item && item._id && item._id}
+                    sale={item && item.sale && item.sale}
+                    discount={item && item.discount && item.discount}
+                    createdAt={item && item.createdAt && item.createdAt}
+                  />
+                ))
+            : ""}
         </div>
         <Link
           href={"/shop"}
@@ -201,7 +208,10 @@ export default function Home() {
       <div className="min-h-[100vh] font-poppins xs:pt-10 xs:px-5 sm:px-5 lg:px-48 gap-3 grid lg:grid-cols-7 sm:grid-rows-5 xs:grid-rows-5">
         <div className="xs:row-span-4 sm:row-span-4 col-span-5 bg-[url('../images/build-bg1.jpg')] h-full w-full bg-cover bg-center"></div>
         <div className="col-span-2 max-h-[100vh] flex gap-10 flex-col justify-center items-start sm:px-0 lg:px-10">
-          <h1 className="xs:text-2xl sm:text-2xl lg:text-5xl"> Hunt For Your Next Build </h1>
+          <h1 className="xs:text-2xl sm:text-2xl lg:text-5xl">
+            {" "}
+            Hunt For Your Next Build{" "}
+          </h1>
           <Link
             href={"/shop"}
             className="text-white bg-zinc-900 py-4 px-8 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl transition-all duration-200"
@@ -220,22 +230,26 @@ export default function Home() {
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
         <div className="grid gap-3 pb-10 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {items.items?.slice(4, 8).map((item: any) => (
-            <ItemCard
-              key={item._id}
-              price={item && item.price && item.price}
-              description={item && item.description && item.description}
-              image={item && item.image && item.image}
-              type={item && item.type && item.type}
-              stock={item && item.stock && item.stock}
-              productName={item && item.productName && item.productName}
-              brand={item && item.brand && item.brand}
-              id={item && item._id && item._id}
-              sale={item && item.sale && item.sale}
-              discount={item && item.discount && item.discount}
-              createdAt={item && item.createdAt && item.createdAt}
-            />
-          ))}
+          {itemContext && itemContext.items
+            ? itemContext.items
+                .slice(0, 4)
+                .map((item: any) => (
+                  <ItemCard
+                    key={item._id}
+                    price={item && item.price && item.price}
+                    description={item && item.description && item.description}
+                    image={item && item.image && item.image}
+                    type={item && item.type && item.type}
+                    stock={item && item.stock && item.stock}
+                    productName={item && item.productName && item.productName}
+                    brand={item && item.brand && item.brand}
+                    id={item && item._id && item._id}
+                    sale={item && item.sale && item.sale}
+                    discount={item && item.discount && item.discount}
+                    createdAt={item && item.createdAt && item.createdAt}
+                  />
+                ))
+            : ""}
         </div>
         <Link
           href={"/shop"}

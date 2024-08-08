@@ -6,6 +6,9 @@ import ItemContextProvider from "@/lib/context/item-context";
 import CartContextProvider from "@/lib/context/cart-context";
 import Footer from "./components/Footer";
 import NavBarContextProvider from "@/lib/context/navbar-context";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,15 +37,18 @@ export default function RootLayout({
         ></link>
       </head>
       <body className={inter.className}>
+        <Suspense>
         <ItemContextProvider>
           <CartContextProvider>
             <NavBarContextProvider>
             <Navbar />
+            <ToastContainer />
             {children}
             <Footer />
             </NavBarContextProvider>
           </CartContextProvider>
         </ItemContextProvider>
+        </Suspense>
       </body>
     </html>
   );
