@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { FaCartShopping } from "react-icons/fa6";
 import { Badge } from "@/components/ui/badge";
-import { cartContext } from "@/lib/context/cart-context";
+import { CartContext } from "@/lib/context/cart-context";
 import Cart from "../cart/page";
 import Logo from "@/images/logo.png";
 import Image from "next/image";
@@ -15,10 +15,10 @@ import { RxCross2 } from "react-icons/rx";
 
 export default function Navbar() {
   const router = useRouter();
-  const { cart, editCart } = useContext(cartContext);
+  const cartContext = useContext(CartContext);
   const { showModal, setShowModal } = useContext(navbarContext);
   const [active, setActive] = useState(true);
-  const [cartItemsCount, setCartItemsCount] = useState([]);
+  const [cartItemsCount, setCartItemsCount] = useState(0);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -44,13 +44,13 @@ export default function Navbar() {
   }, [showModal]);
 
   useEffect(() => {
-    if (cart.carts) {
-      setCartItemsCount(cart.carts[0].items.length);
+    if (cartContext&&cartContext.cart) {
+      setCartItemsCount(cartContext.cart.items.length);
     }
-    if (!cart.carts) {
+    if (!cartContext) {
       return;
     }
-  }, [cart]);
+  }, [cartContext]);
 
   return (
     <div

@@ -8,20 +8,43 @@ import {
   ReactNode,
 } from "react";
 
-export const cartContext = createContext({
-  cart: {},
-  editCart: async (id: string, newItems: []) => {},
-  getCart: async () => {},
-});
+export type NewCartItem = {
+  newItems: NewCartItemData[];
+};
+
+export type NewCartItemData = {
+  name: string;
+  quantity: number;
+  price: number;
+};
+
+export type CartItems = {
+  name: string;
+  quantity: number;
+  price: number;
+};
+
+export type Cart = {
+  _id: string;
+  items: CartItems[];
+};
+
+export type CartContextType = {
+  cart:Cart|null;
+  editCart: ((id: string, newItems: NewCartItem) => Promise<void>) | null;
+  getCart: (() => Promise<void>) | null;
+};
+
+export const CartContext = createContext({} as CartContextType);
 
 type CartContextProviderProps = {
   children: ReactNode
 }
 
 export default function CartContextProvider({ children }: CartContextProviderProps) {
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState<Cart|null>({ _id: "", items: [] });
 
-  const editCart = async (id: string, newItems: []) => {
+  const editCart =  async (id: string, newItems: NewCartItem) => {
     try {
       const res = await fetch(`http://localhost:3000/api/carts?id=${id}`, {
         method: "PUT",
@@ -46,7 +69,8 @@ export default function CartContextProvider({ children }: CartContextProviderPro
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
-      return setCart(await res.json());
+      let data = await res.json();
+      return setCart(data.carts[0]);
     } catch (error) {
       console.log(error);
     }
@@ -57,7 +81,7 @@ export default function CartContextProvider({ children }: CartContextProviderPro
   }, []);
 
   return (
-    <cartContext.Provider
+    <CartContext.Provider
       value={{
         cart,
         editCart,
@@ -65,6 +89,6 @@ export default function CartContextProvider({ children }: CartContextProviderPro
       }}
     >
       {children}
-    </cartContext.Provider>
+    </CartContext.Provider>
   );
 }

@@ -8,11 +8,12 @@ import {
   ReactNode,
 } from "react";
 
-export const navbarContext = createContext({
-  showModal: false,
-  setShowModal: Dispatch<SetStateAction<boolean>>
-});
+type NavBarContextType = {
+  showModal: boolean;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+};
 
+export const navbarContext = createContext({} as NavBarContextType);
 
 type NavBarContextProviderProps = {
   children: ReactNode

@@ -17,9 +17,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { cartContext } from "@/lib/context/cart-context";
+import { CartContext } from "@/lib/context/cart-context";
 import { get } from "http";
 import Link from "next/link";
+import {toast} from "react-toastify";
 
 type ItemCardProps = {
   price: number;
@@ -35,36 +36,46 @@ type ItemCardProps = {
   createdAt: string;
 };
 
+type CartItems = {
+  name: string;
+  quantity: number;
+  price: number;
+};
+
 export function ItemCard(props: ItemCardProps) {
-  const { cart, editCart, getCart } = useContext(cartContext);
-  const [cartItemData, setCartItemData] = useState([]);
+  const cartContext = useContext(CartContext);
+  const [cartItemData, setCartItemData] = useState<CartItems[]>([]);
 
   useEffect(() => {
-    getCart();
+    if (cartContext && cartContext.getCart) {
+      cartContext.getCart();
+    }
   }, []);
 
   useEffect(() => {
-    if (cart.carts) {
-      setCartItemData(cart.carts[0].items);
+    if (cartContext && cartContext.cart) {
+      setCartItemData(cartContext.cart.items);
     }
-    if (!cart.carts) {
+    if (!cartContext) {
       return;
     }
-  }, [cart]);
+  }, []);
 
   const addItemHandler = async () => {
     if (cartItemData.some((e) => e.name === props.productName)) {
+      toast.error("Item already in cart");
       return;
     } else {
-      setCartItemData(
         cartItemData.push({
           name: props.productName,
           price: props.price,
           quantity: 1,
-        })
+        }
       );
-      await editCart(cart.carts[0]._id, { newItems: cartItemData });
-      getCart();
+      if (cartContext && cartContext.cart && cartContext.editCart && cartContext.getCart) {
+      await cartContext.editCart(cartContext.cart._id, { newItems: cartItemData });
+      await cartContext.getCart();
+      }
     }
   };
 

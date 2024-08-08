@@ -1,36 +1,61 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { itemContext } from "@/lib/context/item-context";
+import { ItemContext } from "@/lib/context/item-context";
 import { Button } from "@/components/ui/button";
 import { ItemCard } from "../components/ItemCard";
-import { cartContext } from "@/lib/context/cart-context";
+import { CartContext } from "@/lib/context/cart-context";
 import Link from "next/link";
+import { toast } from "react-toastify";
+
+type CartItems = {
+  name: string;
+  quantity: number;
+  price: number;
+};
+
+type Item = {
+  price: number;
+  description: Array<string>;
+  image: string;
+  type: string;
+  stock: number;
+  productName: string;
+  brand: string;
+  id: string;
+  sale: boolean;
+  discount: number;
+  createdAt: string;
+};
 
 export default function Product() {
-  const { cart, editCart, getCart } = useContext(cartContext);
-  const { items } = useContext(itemContext);
+  const cartContext = useContext(CartContext);
+  const itemContext = useContext(ItemContext);
   const searchParams = useSearchParams();
   const search = searchParams.get("name");
-  const [itemData, setItemData] = useState([]);
+  const [itemData, setItemData] = useState<Item[]>([]);
   const [itemQuantity, setItemQuantity] = useState(1);
-  const [cartItemData, setCartItemData] = useState([]);
+  const [cartItemData, setCartItemData] = useState<CartItems[]>([]);
 
   useEffect(() => {
-    if (cart.carts) {
-      setCartItemData(cart.carts[0].items);
+    if (cartContext && cartContext.cart) {
+      setCartItemData(cartContext.cart.items);
     }
-    if (!cart.carts) {
+    if (!cartContext) {
       return;
     }
-  }, [cart]);
+  }, []);
 
   useEffect(() => {
-    const filterItemData = () => {
-      setItemData(items.items.filter((item) => item.productName == search));
-    };
-    filterItemData();
-  }, [items]);
+    if (itemContext && itemContext.items) {
+      setItemData(
+        itemContext.items.filter((item) => item.productName == search)
+      );
+    }
+    if (!itemContext) {
+      return;
+    }
+  }, [itemContext.items]);
 
   const addQuantity = async () => {
     setItemQuantity((prevstate) => ++prevstate);
@@ -44,7 +69,7 @@ export default function Product() {
     }
   };
 
-  const handleFocusChange = (e) => {
+  const handleFocusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isNaN(e.target.valueAsNumber) && e.target.valueAsNumber > 0) {
       setItemQuantity(e.target.valueAsNumber);
     }
@@ -55,17 +80,24 @@ export default function Product() {
 
   const addItemHandler = async () => {
     if (cartItemData.some((e) => e.name === itemData[0].productName)) {
-      console.log("this item already exists in cart");
+      toast.error("Item already in cart");
     } else {
-      setCartItemData(
-        cartItemData.push({
-          name: itemData[0].productName,
-          price: itemData[0].price,
-          quantity: itemQuantity,
-        })
-      );
-      await editCart(cart.carts[0]._id, { newItems: cartItemData });
-      await getCart();
+      cartItemData.push({
+        name: itemData[0].productName,
+        price: itemData[0].price,
+        quantity: itemQuantity,
+      });
+      if (
+        cartContext &&
+        cartContext.cart &&
+        cartContext.editCart &&
+        cartContext.getCart
+      ) {
+        await cartContext.editCart(cartContext.cart._id, {
+          newItems: cartItemData,
+        });
+        await cartContext.getCart();
+      }
     }
   };
 
@@ -75,6 +107,7 @@ export default function Product() {
         <div className="col-span-3 flex xs:justify-center xs:items-center sm:justify-center sm:items-center lg:justify-center lg:items-start max-h-screen">
           {itemData[0] ? (
             <img
+            alt="Product image"
               className="sticky border-2 -z-10 top-20 max-h-[80vh] h-full max-w-[40vw]"
               src={itemData[0].image}
             ></img>
@@ -89,7 +122,9 @@ export default function Product() {
               <h3 className="text-sm text-muted-foreground">
                 {itemData[0].brand}
               </h3>
-              <h1 className="xs:text-2xl sm:text-2xl lg:text-4xl">{itemData[0].productName}</h1>
+              <h1 className="xs:text-2xl sm:text-2xl lg:text-4xl">
+                {itemData[0].productName}
+              </h1>
               <div className="text-base flex items-center flex-row gap-5">
                 <p className={itemData[0].sale == true ? "line-through" : ""}>
                   {" "}
@@ -137,10 +172,11 @@ export default function Product() {
             </div>
             <div className="row-span-3 flex xs:text-lg sm:text-lg lg:text-lg ">
               <ul className="list-disc space-y-2 pl-4 pt-5">
-                {(itemData[0].description).map((item) => (
+                {itemData[0].description.map((item:string) => (
                   <li key={item}>{item}</li>
                 ))}
-              </ul></div>
+              </ul>
+            </div>
           </div>
         ) : (
           ""
@@ -150,12 +186,14 @@ export default function Product() {
         id="popular"
         className="min-h-[100vh] pb-[8vh] flex flex-col gap-3 font-poppins items-center justify-start"
       >
-        <h2 className="xs:text-2xl sm:text-2xl lg:text-4xl">You may also like</h2>
+        <h2 className="xs:text-2xl sm:text-2xl lg:text-4xl">
+          You may also like
+        </h2>
         <h3 className="text-sm font-light">
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
         <div className="grid gap-3 pb-5 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {items.items?.slice(4, 8).map((item: any) => (
+          {itemContext.items?.slice(4, 8).map((item: any) => (
             <ItemCard
               key={item._id}
               price={item && item.price && item.price}
@@ -172,7 +210,10 @@ export default function Product() {
             />
           ))}
         </div>
-        <Link href={"/shop"} className="text-white bg-zinc-900 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl  py-4 px-8 transition-all duration-200">
+        <Link
+          href={"/shop"}
+          className="text-white bg-zinc-900 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl  py-4 px-8 transition-all duration-200"
+        >
           View all
         </Link>
       </div>

@@ -21,7 +21,7 @@ export default function HamburgerModal() {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="fixed font-poppins min-h[100vh] min-w-[100vw] h-full backdrop-blur-md mt-[12.7vh] z-50 flex top-0 left-0">
+    <div className="lg:hidden fixed font-poppins min-h[100vh] min-w-[100vw] h-full backdrop-blur-md mt-[12.7vh] z-50 flex top-0 left-0">
       <div className="h-1/2 w-full grid grid-rows-5 ">
         <Link
           href={"/"}
