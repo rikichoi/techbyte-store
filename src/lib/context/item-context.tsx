@@ -40,7 +40,7 @@ export default function ItemContextProvider({ children }:ItemContextProviderProp
 
   const postItem = async (itemData: {}) => {
     try {
-      const res = await fetch("http://localhost:3000/api/items/", {
+      const res = await fetch("https://techbyte-store.vercel.app/api/items/", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -54,7 +54,7 @@ export default function ItemContextProvider({ children }:ItemContextProviderProp
 
   const getItems = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/items/", {
+      const res = await fetch("https://techbyte-store.vercel.app/api/items/", {
         cache: "no-store",
       });
       if (!res.ok) {
