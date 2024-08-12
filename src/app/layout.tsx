@@ -9,6 +9,7 @@ import NavBarContextProvider from "@/lib/context/navbar-context";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Suspense } from "react";
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,6 +39,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <Suspense>
+          <Analytics/>
         <ItemContextProvider>
           <CartContextProvider>
             <NavBarContextProvider>
