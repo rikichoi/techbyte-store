@@ -205,7 +205,7 @@ export default function Home() {
         ))}
       </div>
 
-      <div className="min-h-[100vh] font-poppins xs:pt-10 xs:px-5 sm:px-5 lg:px-48 gap-3 grid lg:grid-cols-7 sm:grid-rows-5 xs:grid-rows-5">
+      <div className="min-h-[100vh] font-poppins xs:pt-10 xs:px-5 sm:px-5 lg:px-48 gap-3 grid lg:grid-cols-7 lg:grid-rows-1 sm:grid-rows-5 xs:grid-rows-5">
         <div className="xs:row-span-4 sm:row-span-4 col-span-5 bg-[url('../images/build-bg1.jpg')] h-full w-full bg-cover bg-center"></div>
         <div className="col-span-2 max-h-[100vh] flex gap-10 flex-col justify-center items-start sm:px-0 lg:px-10">
           <h1 className="xs:text-2xl sm:text-2xl lg:text-5xl">
