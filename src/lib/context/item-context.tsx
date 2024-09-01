@@ -54,9 +54,7 @@ export default function ItemContextProvider({ children }:ItemContextProviderProp
 
   const getItems = async () => {
     try {
-      const res = await fetch("https://techbyte-store.vercel.app/api/items/", {
-        cache: "no-store",
-      });
+      const res = await fetch("https://techbyte-store.vercel.app/api/items/", {cache: "force-cache"});
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }

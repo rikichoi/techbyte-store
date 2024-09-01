@@ -14,7 +14,10 @@ import PhoneImage from "@/images/mobile-phone-cases-mockup-product-showcase.webp
 import StemImage from "@/images/close-up-hand-holding-smartphone.webp";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { navbarContext } from "@/lib/context/navbar-context";
-
+import Bg1 from "../images/home-bg1.jpg";
+import Bg2 from "../images/home-bg2.jpg";
+import Bg3 from "../images/home-bg3.jpg";
+import Bg4 from "../images/home-bg4.jpg";
 
 export default function Home() {
   const router = useRouter();
@@ -115,10 +118,10 @@ export default function Home() {
 
   return (
     <main className={showModal ? "h-full" : "h-full"}>
-      <div id="home" className="min-h-[100vh] pt-[8vh] overflow-hidden">
-        <div className="absolute inset-0 -z-10 max-h-[100vh] w-full bg-blue-600 bg-[radial-gradient(#e5e7eb_0.1px,transparent_1px)] [background-size:16px_16px]"></div>
-        <div className="relative top-0 -z-10 h-full w-full bg-white"></div>
-        <div className="w-full min-h-[92vh] gap-x-20 grid xs:grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xs:grid-rows-3 sm:grid-rows-3">
+      <div id="home" className="min-h-[100vh] xs:min-h-[40vh] pt-[8vh] overflow-hidden">
+        <div className="absolute inset-0 -z-10 max-h-[100vh] xs:h-[40vh] w-full bg-blue-600 bg-[radial-gradient(#e5e7eb_0.1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div className="relative top-0 -z-10 h-full w-full  bg-white"></div>
+        <div className="w-full sm:min-h-[92vh] sm:h-full min-h-[40px] h-[40px] pt-40 sm:pt-12 gap-x-20 grid xs:grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xs:grid-rows-3 sm:grid-rows-3">
           <div className="flex xs:row-span-1 sm:row-span-1 lg:row-span-3 items-center font-poppins text-white xs:justify-center sm:justify-center lg:justify-end">
             <div className="flex xs:pt-12 sm:pt-12 lg:pt-0 xs:gap-y-2 sm:gap-y-2 lg:gap-y-7 flex-col items-center">
               <h3 className="xs:text-xs sm:text-sm lg:text-sm font-light">
@@ -135,15 +138,41 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div className="lg:justify-start xs:row-span-2 sm:row-span-2 lg:row-span-3 xs:justify-center sm:justify-center flex items-center">
-            <div className="grid grid-cols-2 xs:h-5/6 sm:h-5/6 xs:w-5/6  sm:w-5/6 lg:h-2/3 lg:w-2/3 gap-5">
-              <div className="grid grid-rows-2 gap-5">
-                <div className="bg-[url('../images/home-bg1.jpg')] h-full w-full rounded-2xl bg-cover bg-center"></div>
-                <div className="bg-[url('../images/home-bg2.jpg')] h-full w-full rounded-2xl bg-cover bg-center"></div>
+          <div className="lg:justify-start xs:hidden xs:row-span-2 sm:row-span-2 lg:row-span-3 xs:justify-center sm:justify-center flex items-center">
+            <div className="xs:hidden flex flex-col gap-3">
+              <div className="h-full w-full flex flex-row gap-3">
+                <Image
+                  src={Bg1}
+                  alt="Background 1"
+                  height={500}
+                  width={500}
+                  className=" rounded-2xl w-[200px] h-[200px] object-cover"
+                ></Image>
+                <Image
+                  src={Bg2}
+                  alt="Background 1"
+                  height={500}
+                  width={500}
+                  className=" rounded-2xl w-[200px] h-[200px] object-cover"
+                ></Image>
               </div>
-              <div className="grid grid-rows-2 gap-5">
-                <div className="bg-[url('../images/home-bg3.jpg')] h-full w-full rounded-2xl bg-cover bg-center"></div>
-                <div className="bg-[url('../images/home-bg4.jpg')] h-full w-full rounded-2xl bg-cover bg-center"></div>
+              <div className="h-full w-full flex flex-row gap-3">
+                <Image
+                  src={Bg3}
+                  alt="Background 1"
+                  height={500}
+                  width={500}
+                  className=" rounded-2xl w-[200px] h-[200px] object-cover"
+                ></Image>
+                <Image
+                  src={Bg4}
+                  alt="Background 1"
+                  height={500}
+                  width={500}
+                  className="w-[200px] h-[200px] object-cover rounded-2xl"
+                ></Image>
+
+                {/* <div className="bg-[url('../images/home-bg4.jpg')] h-full w-full rounded-2xl bg-cover bg-center"></div> */}
               </div>
             </div>
           </div>

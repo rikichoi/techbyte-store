@@ -63,9 +63,7 @@ export default function CartContextProvider({ children }: CartContextProviderPro
   
   const getCart = async () => {
     try {
-      const res = await fetch("https://techbyte-store.vercel.app/api/carts/", {
-        cache: "no-store",
-      });
+      const res = await fetch("https://techbyte-store.vercel.app/api/carts/", {cache: "force-cache"});
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
