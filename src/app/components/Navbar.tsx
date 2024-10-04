@@ -32,11 +32,9 @@ export default function Navbar() {
         }
         if (showModal == false && currentScrollY > lastScrollY) {
           setActive(false);
-          console.log("down");
         }
         if (showModal == false && currentScrollY < lastScrollY) {
           setActive(true);
-          console.log("up");
         }
         lastScrollY = currentScrollY;
       });

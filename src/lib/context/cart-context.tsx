@@ -46,7 +46,7 @@ export default function CartContextProvider({ children }: CartContextProviderPro
 
   const editCart =  async (id: string, newItems: NewCartItem) => {
     try {
-      const res = await fetch(`https://techbyte-store.vercel.app/api/carts?id=${id}`, {
+      const res = await fetch(`http://localhost:3000/api/carts?id=${id}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json",
@@ -63,7 +63,7 @@ export default function CartContextProvider({ children }: CartContextProviderPro
   
   const getCart = async () => {
     try {
-      const res = await fetch("https://techbyte-store.vercel.app/api/carts/", {cache: "force-cache"});
+      const res = await fetch("http://localhost:3000/api/carts/");
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }

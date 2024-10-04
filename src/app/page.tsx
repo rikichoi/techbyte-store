@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect, useContext, cache, Key } from "react";
+import { useState, useEffect, useContext, cache, Key, Suspense } from "react";
 import { ItemCard } from "@/app/components/ItemCard";
 import { ItemContext } from "@/lib/context/item-context";
 import Link from "next/link";
@@ -18,6 +18,7 @@ import Bg1 from "../images/home-bg1.jpg";
 import Bg2 from "../images/home-bg2.jpg";
 import Bg3 from "../images/home-bg3.jpg";
 import Bg4 from "../images/home-bg4.jpg";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   const router = useRouter();
@@ -118,7 +119,10 @@ export default function Home() {
 
   return (
     <main className={showModal ? "h-full" : "h-full"}>
-      <div id="home" className="min-h-[100vh] xs:min-h-[40vh] pt-[8vh] overflow-hidden">
+      <div
+        id="home"
+        className="min-h-[100vh] xs:min-h-[40vh] pt-[8vh] overflow-hidden"
+      >
         <div className="absolute inset-0 -z-10 max-h-[100vh] xs:h-[40vh] w-full bg-blue-600 bg-[radial-gradient(#e5e7eb_0.1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div className="relative top-0 -z-10 h-full w-full  bg-white"></div>
         <div className="w-full sm:min-h-[92vh] sm:h-full min-h-[40px] h-[40px] pt-40 sm:pt-12 gap-x-20 grid xs:grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xs:grid-rows-3 sm:grid-rows-3">
@@ -187,29 +191,38 @@ export default function Home() {
         <h3 className="xs:text-xs text-sm font-light">
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
-        <div className="grid gap-3 lg:pb-10 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {itemContext && itemContext.items
-            ? itemContext.items
-                .filter((item: any) => item.sale == true)
-                .slice(0, 4)
-                .map((item: any) => (
-                  <ItemCard
-                    key={item._id}
-                    price={item && item.price && item.price}
-                    description={item && item.description && item.description}
-                    image={item && item.image && item.image}
-                    type={item && item.type && item.type}
-                    stock={item && item.stock && item.stock}
-                    productName={item && item.productName && item.productName}
-                    brand={item && item.brand && item.brand}
-                    id={item && item._id && item._id}
-                    sale={item && item.sale && item.sale}
-                    discount={item && item.discount && item.discount}
-                    createdAt={item && item.createdAt && item.createdAt}
-                  />
-                ))
-            : ""}
-        </div>
+        {itemContext.isLoading ? (
+          <div className="grid gap-3 lg:pb-10 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full">
+            {[...Array(4)].map((_, index) => (
+              <Skeleton key={index} className="h-64 w-full" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid gap-3 lg:pb-10 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            {itemContext && itemContext.items
+              ? itemContext.items
+                  .filter((item: any) => item.sale == true)
+                  .slice(0, 4)
+                  .map((item: any) => (
+                    <ItemCard
+                      key={item._id}
+                      price={item && item.price && item.price}
+                      description={item && item.description && item.description}
+                      image={item && item.image && item.image}
+                      type={item && item.type && item.type}
+                      stock={item && item.stock && item.stock}
+                      productName={item && item.productName && item.productName}
+                      brand={item && item.brand && item.brand}
+                      id={item && item._id && item._id}
+                      sale={item && item.sale && item.sale}
+                      discount={item && item.discount && item.discount}
+                      createdAt={item && item.createdAt && item.createdAt}
+                    />
+                  ))
+              : ""}
+          </div>
+        )}
+
         <Link
           href={"/shop"}
           className="text-white xs:my-8 sm:my-8 bg-zinc-900 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl  py-4 px-8 transition-all duration-200"
@@ -258,28 +271,37 @@ export default function Home() {
         <h3 className="xs:text-xs text-sm font-light">
           FREE DELIVERY FROM $60 AND EASY RETURNS
         </h3>
-        <div className="grid gap-3 pb-10 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {itemContext && itemContext.items
-            ? itemContext.items
-                .slice(0, 4)
-                .map((item: any) => (
-                  <ItemCard
-                    key={item._id}
-                    price={item && item.price && item.price}
-                    description={item && item.description && item.description}
-                    image={item && item.image && item.image}
-                    type={item && item.type && item.type}
-                    stock={item && item.stock && item.stock}
-                    productName={item && item.productName && item.productName}
-                    brand={item && item.brand && item.brand}
-                    id={item && item._id && item._id}
-                    sale={item && item.sale && item.sale}
-                    discount={item && item.discount && item.discount}
-                    createdAt={item && item.createdAt && item.createdAt}
-                  />
-                ))
-            : ""}
-        </div>
+        {itemContext.isLoading ? (
+          <div className="grid gap-3 lg:pb-10 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full">
+            {[...Array(4)].map((_, index) => (
+              <Skeleton key={index} className="h-64 w-full" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid gap-3 pb-10 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            {itemContext && itemContext.items
+              ? itemContext.items
+                  .slice(0, 4)
+                  .map((item: any) => (
+                    <ItemCard
+                      key={item._id}
+                      price={item && item.price && item.price}
+                      description={item && item.description && item.description}
+                      image={item && item.image && item.image}
+                      type={item && item.type && item.type}
+                      stock={item && item.stock && item.stock}
+                      productName={item && item.productName && item.productName}
+                      brand={item && item.brand && item.brand}
+                      id={item && item._id && item._id}
+                      sale={item && item.sale && item.sale}
+                      discount={item && item.discount && item.discount}
+                      createdAt={item && item.createdAt && item.createdAt}
+                    />
+                  ))
+              : ""}
+          </div>
+        )}
+
         <Link
           href={"/shop"}
           className="text-white bg-zinc-900 hover:text-black hover:bg-white border-2 hover:border-black border-zinc-900 hover:shadow-2xl py-4 px-8 transition-all duration-200"

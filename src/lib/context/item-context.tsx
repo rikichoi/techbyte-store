@@ -8,7 +8,6 @@ import {
   ReactNode,
 } from "react";
 
-
 export type Item = {
   price: number;
   description: Array<string>; // Specify the type of elements in the array
@@ -24,23 +23,27 @@ export type Item = {
 };
 
 export type ItemContextType = {
-  items: Item[]|null;
+  items: Item[] | null;
+  isLoading: boolean;
   postItem: ((itemData: {}) => Promise<void>) | null;
   getItems: (() => Promise<void>) | null;
-}
+};
 
 export const ItemContext = createContext({} as ItemContextType);
 
 type ItemContextProviderProps = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
-export default function ItemContextProvider({ children }:ItemContextProviderProps) {
-  const [items, setItems] = useState<Item[]|null>(null);
+export default function ItemContextProvider({
+  children,
+}: ItemContextProviderProps) {
+  const [items, setItems] = useState<Item[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const postItem = async (itemData: {}) => {
     try {
-      const res = await fetch("https://techbyte-store.vercel.app/api/items/", {
+      const res = await fetch("http://localhost:3000/api/items/", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -54,11 +57,13 @@ export default function ItemContextProvider({ children }:ItemContextProviderProp
 
   const getItems = async () => {
     try {
-      const res = await fetch("https://techbyte-store.vercel.app/api/items/", {cache: "force-cache"});
+      setIsLoading(true);
+      const res = await fetch("http://localhost:3000/api/items/");
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
       let data = await res.json();
+      setIsLoading(false);
       return setItems(data.items);
     } catch (error) {
       console.log(error);
@@ -72,6 +77,7 @@ export default function ItemContextProvider({ children }:ItemContextProviderProp
   return (
     <ItemContext.Provider
       value={{
+        isLoading,
         items,
         postItem,
         getItems,
