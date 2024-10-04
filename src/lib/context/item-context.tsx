@@ -43,7 +43,7 @@ export default function ItemContextProvider({
 
   const postItem = async (itemData: {}) => {
     try {
-      const res = await fetch("http://localhost:3000/api/items/", {
+      const res = await fetch("https://techbyte-store.vercel.app/api/items/", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -58,7 +58,7 @@ export default function ItemContextProvider({
   const getItems = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("http://localhost:3000/api/items/");
+      const res = await fetch("https://techbyte-store.vercel.app/api/items/");
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
